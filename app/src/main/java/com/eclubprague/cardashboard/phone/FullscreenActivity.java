@@ -1,5 +1,6 @@
 package com.eclubprague.cardashboard.phone;
 
+import com.eclubprague.cardashboard.core.Fox;
 import com.eclubprague.cardashboard.phone.util.SystemUiHider;
 
 import android.annotation.TargetApi;
@@ -112,6 +113,7 @@ public class FullscreenActivity extends Activity {
         // Upon interacting with UI controls, delay any scheduled hide()
         // operations to prevent the jarring behavior of controls going away
         // while interacting with the UI.
+        Fox x = new Fox();
         findViewById(R.id.dummy_button).setOnTouchListener(mDelayHideTouchListener);
     }
 
