@@ -4,7 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/CarDashboardPhone.iml" filepath="$PROJECT_DIR$/CarDashboardPhone.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-      <module fileurl="file://$PROJECT_DIR$/cardashboardcore/cardashboardcore.iml" filepath="$PROJECT_DIR$/cardashboardcore/cardashboardcore.iml" />
+      <module fileurl="file://$PROJECT_DIR$/CarDashboardCore/cardashboardcore.iml" filepath="$PROJECT_DIR$/CarDashboardCore/cardashboardcore.iml" />
     </modules>
   </component>
 </project>
