@@ -7,5 +7,4 @@ import com.eclubprague.cardashboard.core.Foo;
  */
 public class Foo2 {
 
-
 }
