@@ -10,25 +10,22 @@ import android.support.v4.view.PagerAdapter;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.eclubprague.cardashboard.phone.R;
+import com.eclubprague.cardashboard.core.data.ModuleSupplier;
+import com.eclubprague.cardashboard.core.modules.base.IModuleContext;
+import com.eclubprague.cardashboard.core.modules.base.ISubmenuModule;
+import com.eclubprague.cardashboard.core.modules.predefined.HomeScreenModule;
+import com.eclubprague.cardashboard.core.modules.base.IModule;
 import com.eclubprague.cardashboard.phone.util.VerticalViewPager;
 
-public class ScreenSlideActivity extends FragmentActivity {
-    /**
-     * The number of pages (wizard steps) to show in this demo.
-     */
-    private static final int NUM_PAGES = 5;
+import java.util.List;
 
-    /**
-     * The pager widget, which handles animation and allows swiping horizontally to access previous
-     * and next wizard steps.
-     */
+public class ScreenSlideActivity extends FragmentActivity implements IModuleContext {
+
     private VerticalViewPager mPager;
 
-    /**
-     * The pager adapter, which provides the pages to the view pager widget.
-     */
     private PagerAdapter mPagerAdapter;
+
+    private List<IModule> modules;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,7 +34,7 @@ public class ScreenSlideActivity extends FragmentActivity {
 
         // Instantiate a ViewPager and a PagerAdapter.
         mPager = (VerticalViewPager) findViewById(R.id.pager);
-        mPagerAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager());
+        mPagerAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager(), ModuleSupplier.getInstance().getHomeScreenModule(this).getSubmodules(this));
         mPager.setAdapter(mPagerAdapter);
     }
 
@@ -53,23 +50,32 @@ public class ScreenSlideActivity extends FragmentActivity {
         }
     }
 
-    /**
-     * A simple pager adapter that represents 5 ScreenSlidePageFragment objects, in
-     * sequence.
-     */
+    @Override
+    public void setSubmenuModule(ISubmenuModule parentModule) {
+
+    }
+
+    @Override
+    public void swapModules(IModule oldModule, IModule newModule, boolean animate) {
+
+    }
+
     private class ScreenSlidePagerAdapter extends FragmentStatePagerAdapter {
-        public ScreenSlidePagerAdapter(FragmentManager fm) {
+        List<IModule> modules;
+
+        public ScreenSlidePagerAdapter(FragmentManager fm, List<IModule> modules) {
             super(fm);
+            this.modules = modules;
         }
 
         @Override
         public Fragment getItem(int position) {
-            return new ScreenSlidePageFragment();
+            return ScreenSlidePageFragment.newInstance(modules.get(position));
         }
 
         @Override
         public int getCount() {
-            return NUM_PAGES;
+            return modules.size();
         }
     }
 }
