@@ -13,7 +13,6 @@ import android.view.MenuItem;
 import com.eclubprague.cardashboard.core.data.ModuleSupplier;
 import com.eclubprague.cardashboard.core.modules.base.IModuleContext;
 import com.eclubprague.cardashboard.core.modules.base.ISubmenuModule;
-import com.eclubprague.cardashboard.core.modules.predefined.HomeScreenModule;
 import com.eclubprague.cardashboard.core.modules.base.IModule;
 import com.eclubprague.cardashboard.phone.util.VerticalViewPager;
 
@@ -50,8 +49,14 @@ public class ScreenSlideActivity extends FragmentActivity implements IModuleCont
         }
     }
 
+
     @Override
-    public void setSubmenuModule(ISubmenuModule parentModule) {
+    public void goToSubmenu(ISubmenuModule parentModule) {
+
+    }
+
+    @Override
+    public void goBack(ISubmenuModule parentModule) {
 
     }
 

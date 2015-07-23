@@ -2,15 +2,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_gravity="center"
-    tools:context="com.eclubprague.cardashboard.phone.ScreenSlidePageFragment">
+    tools:context="com.eclubprague.cardashboard.phone.ScreenSlidePageFragment"
+
+    >
     <LinearLayout
         android:layout_width="match_parent"
-        android:orientation="horizontal"
-        android:layout_gravity="center"
         android:layout_height="match_parent"
+        android:orientation="horizontal"
         android:id="@+id/card_wrapper"
-        android:background="#CCCCCC"
+        android:padding="100dp"
+        style="@style/card_holder"
         >
 
     </LinearLayout>
