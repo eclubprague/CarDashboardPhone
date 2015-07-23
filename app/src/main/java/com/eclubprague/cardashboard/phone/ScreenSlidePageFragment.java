@@ -34,7 +34,7 @@ public class ScreenSlidePageFragment extends Fragment {
                              Bundle savedInstanceState) {
         ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_screen_slide_page, container, false);
         LinearLayout cardWrapper = (LinearLayout) rootView.findViewById(R.id.card_wrapper);
-        ViewGroup moduleContent =this.module.createViewWithHolder(getActivity(), R.layout.module_holder, cardWrapper);
+        ViewGroup moduleContent =(this.module.createViewWithHolder(getActivity(), R.layout.module_holder, cardWrapper)).holder;
         cardWrapper.addView(moduleContent);
         return rootView;
     }

@@ -3,8 +3,6 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:theme="@style/card_holder"
-    android:background="?attr/card_background"
-    android:cacheColorHint="?card_background"
+    style="@style/card_holder"
     android:layout_gravity="center">
 </LinearLayout>
