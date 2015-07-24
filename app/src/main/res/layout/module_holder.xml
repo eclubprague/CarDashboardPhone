@@ -6,3 +6,5 @@
     style="@style/card_holder"
     android:layout_gravity="center">
 </LinearLayout>
+
+<!-- comment -->
