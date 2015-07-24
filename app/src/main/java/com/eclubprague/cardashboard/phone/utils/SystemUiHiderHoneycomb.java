@@ -1,4 +1,4 @@
-package com.eclubprague.cardashboard.phone.util;
+package com.eclubprague.cardashboard.phone.utils;
 
 import android.annotation.TargetApi;
 import android.app.Activity;

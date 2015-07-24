@@ -1,5 +1,5 @@
 <!-- activity_screen_slide.xml -->
-<com.eclubprague.cardashboard.phone.util.VerticalViewPager
+<com.eclubprague.cardashboard.phone.utils.VerticalViewPager
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/pager"
     android:layout_width="match_parent"

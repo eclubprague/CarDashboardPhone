@@ -1,19 +1,16 @@
-package com.eclubprague.cardashboard.phone;
+package com.eclubprague.cardashboard.phone.fragments;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 
 import com.eclubprague.cardashboard.core.modules.base.IModule;
+import com.eclubprague.cardashboard.phone.R;
 
 public class ScreenSlidePageFragment extends Fragment {
     private static final String TAG = ScreenSlidePageFragment.class.getSimpleName();

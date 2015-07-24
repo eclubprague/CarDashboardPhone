@@ -1,4 +1,4 @@
-package com.eclubprague.cardashboard.phone.util;
+package com.eclubprague.cardashboard.phone.utils;
 
 import android.app.Activity;
 import android.view.View;
