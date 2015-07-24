@@ -1,5 +1,6 @@
 package com.eclubprague.cardashboard.phone.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -18,7 +19,7 @@ import com.eclubprague.cardashboard.phone.utils.VerticalViewPager;
 import java.util.List;
 
 public class ScreenSlideActivity extends FragmentActivity implements IModuleContext {
-
+    public static final String KEY_PARENT_MODULE = ScreenSlideActivity.class.getName() + ".KEY_PARENT_MODULE";
     private VerticalViewPager mPager;
 
     private PagerAdapter mPagerAdapter;
@@ -52,12 +53,14 @@ public class ScreenSlideActivity extends FragmentActivity implements IModuleCont
 
     @Override
     public void goToSubmenu(IParentModule parentModule) {
-
+        Intent intent = new Intent(this, ScreenSlideActivity.class);
+        intent.putExtra(ScreenSlideActivity.KEY_PARENT_MODULE, parentModule.getId());
+        startActivity(intent);
     }
 
     @Override
     public void goBack(IParentModule parentModule) {
-
+        finish();
     }
 
     @Override
