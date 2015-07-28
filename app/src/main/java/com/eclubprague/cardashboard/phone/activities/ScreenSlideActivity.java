@@ -12,6 +12,7 @@ import com.eclubprague.cardashboard.core.data.ModuleSupplier;
 import com.eclubprague.cardashboard.core.modules.base.IModuleContext;
 import com.eclubprague.cardashboard.core.modules.base.IParentModule;
 import com.eclubprague.cardashboard.core.modules.base.IModule;
+import com.eclubprague.cardashboard.core.modules.predefined.EmptyModule;
 import com.eclubprague.cardashboard.phone.R;
 import com.eclubprague.cardashboard.phone.fragments.ScreenSlidePageFragment;
 import com.eclubprague.cardashboard.phone.utils.VerticalViewPager;
@@ -23,7 +24,7 @@ public class ScreenSlideActivity extends FragmentActivity implements IModuleCont
     private VerticalViewPager mPager;
 
     private PagerAdapter mPagerAdapter;
-
+    private IParentModule parentModule;
     private List<IModule> modules;
 
     @Override
@@ -31,41 +32,60 @@ public class ScreenSlideActivity extends FragmentActivity implements IModuleCont
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_screen_slide);
 
-        // Instantiate a ViewPager and a PagerAdapter.
         mPager = (VerticalViewPager) findViewById(R.id.pager);
-        mPagerAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager(), ModuleSupplier.getInstance().getHomeScreenModule(this).getSubmodules(this));
-        mPager.setAdapter(mPagerAdapter);
     }
 
     @Override
     public void onBackPressed() {
         if (mPager.getCurrentItem() == 0) {
-            // If the user is currently looking at the first step, allow the system to handle the
-            // Back button. This calls finish() on this activity and pops the back stack.
             super.onBackPressed();
         } else {
-            // Otherwise, select the previous step.
             mPager.setCurrentItem(mPager.getCurrentItem() - 1);
         }
     }
 
+    protected void initPager(){
+        mPagerAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager(), modules);
+        mPager.setAdapter(mPagerAdapter);
+    }
+
+    protected void setModule(IParentModule parentModule){
+        getActionBar().setTitle(parentModule.getTitle().getString(this));
+        getActionBar().setIcon(parentModule.getIcon().getIcon(this));
+        this.parentModule = parentModule;
+        this.modules = this.parentModule.getSubmodules(this);
+        addEmptyModule();
+        initPager();
+    }
+
+    private void addEmptyModule() {
+        modules.add(new EmptyModule(this, parentModule, null, null));
+    }
 
 
     @Override
-    public void goToSubmenu(IParentModule parentModule) {
-        Intent intent = new Intent(this, ScreenSlideActivity.class);
-        intent.putExtra(ScreenSlideActivity.KEY_PARENT_MODULE, parentModule.getId());
-        startActivity(intent);
+    public void goToSubmodules(IParentModule parentModule) {
+//TODO
     }
 
     @Override
-    public void goBack(IParentModule parentModule) {
-        finish();
+    public void goBackFromSubmodules(IParentModule parentModule) {
+//TODO
+    }
+
+    @Override
+    public void toggleQuickMenu(IModule module, boolean activate) {
+//TODO
+    }
+
+    @Override
+    public void launchIntent(Intent intent) {
+//TODO
     }
 
     @Override
     public void swapModules(IModule oldModule, IModule newModule, boolean animate) {
-
+//TODO
     }
 
     private class ScreenSlidePagerAdapter extends FragmentStatePagerAdapter {
