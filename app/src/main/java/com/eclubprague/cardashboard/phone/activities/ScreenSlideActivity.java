@@ -7,6 +7,8 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.PagerAdapter;
+import android.util.Log;
+import android.widget.ViewSwitcher;
 
 import com.eclubprague.cardashboard.core.data.ModuleSupplier;
 import com.eclubprague.cardashboard.core.modules.base.IModuleContext;
@@ -20,7 +22,9 @@ import com.eclubprague.cardashboard.phone.utils.VerticalViewPager;
 import java.util.List;
 
 public class ScreenSlideActivity extends FragmentActivity implements IModuleContext {
-    public static final String KEY_PARENT_MODULE = ScreenSlideActivity.class.getName() + ".KEY_PARENT_MODULE";
+    private static final String TAG = ScreenSlideActivity.class.getSimpleName();
+
+
     private VerticalViewPager mPager;
 
     private PagerAdapter mPagerAdapter;
@@ -31,7 +35,6 @@ public class ScreenSlideActivity extends FragmentActivity implements IModuleCont
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_screen_slide);
-
         mPager = (VerticalViewPager) findViewById(R.id.pager);
     }
 
@@ -44,12 +47,12 @@ public class ScreenSlideActivity extends FragmentActivity implements IModuleCont
         }
     }
 
-    protected void initPager(){
+    protected void initPager() {
         mPagerAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager(), modules);
         mPager.setAdapter(mPagerAdapter);
     }
 
-    protected void setModule(IParentModule parentModule){
+    protected void setModule(IParentModule parentModule) {
         getActionBar().setTitle(parentModule.getTitle().getString(this));
         getActionBar().setIcon(parentModule.getIcon().getIcon(this));
         this.parentModule = parentModule;
@@ -65,22 +68,35 @@ public class ScreenSlideActivity extends FragmentActivity implements IModuleCont
 
     @Override
     public void goToSubmodules(IParentModule parentModule) {
-//TODO
+        Intent intent = new Intent(this, ModuleActivity.class);
+        intent.putExtra(ModuleActivity.KEY_PARENT_MODULE, parentModule.getId());
+        startActivity(intent);
     }
 
     @Override
     public void goBackFromSubmodules(IParentModule parentModule) {
-//TODO
+        finish();
     }
 
     @Override
     public void toggleQuickMenu(IModule module, boolean activate) {
-//TODO
+        if (activate) {
+            ViewSwitcher holder = (ViewSwitcher) module.loadHolder();
+            holder.showNext();
+            Log.d(TAG, "Toggling quick menu: activating, content: " + holder.getChildCount());
+            for (int i = 0; i < holder.getChildCount(); i++) {
+                Log.d(TAG, "child at " + i + ": " + holder.getChildAt(i));
+            }
+        } else {
+            ViewSwitcher holder = (ViewSwitcher) module.loadHolder();
+            holder.showPrevious();
+            Log.d(TAG, "Toggling quick menu: deactivating, content: " + holder.getChildCount());
+        }
     }
 
     @Override
     public void launchIntent(Intent intent) {
-//TODO
+        startActivity(intent);
     }
 
     @Override
