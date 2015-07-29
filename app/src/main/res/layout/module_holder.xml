@@ -4,6 +4,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_gravity="center"
-    android:inAnimation="@android:anim/slide_in_left"
+    android:inAnimation="@android:anim/fade_in"
     android:orientation="vertical"
-    android:outAnimation="@android:anim/slide_out_right"></ViewSwitcher>
+    android:outAnimation="@android:anim/fade_out"></ViewSwitcher>
