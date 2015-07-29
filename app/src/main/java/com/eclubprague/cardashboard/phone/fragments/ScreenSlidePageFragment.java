@@ -9,7 +9,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
+import com.eclubprague.cardashboard.core.data.ModuleSupplier;
 import com.eclubprague.cardashboard.core.modules.base.IModule;
+import com.eclubprague.cardashboard.core.modules.base.IModuleContext;
+import com.eclubprague.cardashboard.core.modules.base.models.ModuleId;
 import com.eclubprague.cardashboard.phone.R;
 
 public class ScreenSlidePageFragment extends Fragment {
@@ -20,10 +23,32 @@ public class ScreenSlidePageFragment extends Fragment {
     private ViewPager mPager;
     private PagerAdapter mPagerAdapter;
 
-    public static ScreenSlidePageFragment newInstance(IModule module){
+    public static ScreenSlidePageFragment newInstance(IModule module) {
         ScreenSlidePageFragment fragment = new ScreenSlidePageFragment();
         fragment.setModule(module);
+        Bundle b = new Bundle();
+        b.putSerializable("moduleId", module.getId());
+        fragment.setArguments(b);
         return fragment;
+    }
+
+    public ScreenSlidePageFragment() {
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        Bundle b = getArguments();
+        if (b != null) {
+            ModuleId moduleId = (ModuleId) b.getSerializable("moduleId");
+            this.module = ModuleSupplier.getInstance().findModule((IModuleContext) getActivity(), moduleId);
+        }
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        outState.putSerializable("moduleId", this.module.getId());
+        super.onSaveInstanceState(outState);
     }
 
     @Override
@@ -31,16 +56,14 @@ public class ScreenSlidePageFragment extends Fragment {
                              Bundle savedInstanceState) {
         ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_screen_slide_page, container, false);
         LinearLayout cardWrapper = (LinearLayout) rootView.findViewById(R.id.card_wrapper);
-        ViewGroup moduleContent =(this.module.createViewWithHolder(getActivity(), R.layout.module_holder, cardWrapper)).holder;
+        ViewGroup moduleContent = (this.module.createViewWithHolder(getActivity(), R.layout.module_holder, cardWrapper)).holder;
         cardWrapper.addView(moduleContent);
         return rootView;
     }
 
-    public void setModule(IModule module){
+    public void setModule(IModule module) {
         this.module = module;
     }
-
-
 
 
 }
