@@ -1,5 +1,6 @@
 package com.eclubprague.cardashboard.phone.activities;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -16,6 +17,7 @@ import com.eclubprague.cardashboard.core.data.ModuleSupplier;
 import com.eclubprague.cardashboard.core.modules.base.IModuleContext;
 import com.eclubprague.cardashboard.core.modules.base.IParentModule;
 import com.eclubprague.cardashboard.core.modules.base.IModule;
+import com.eclubprague.cardashboard.core.modules.base.models.resources.StringResource;
 import com.eclubprague.cardashboard.core.modules.predefined.EmptyModule;
 import com.eclubprague.cardashboard.phone.R;
 import com.eclubprague.cardashboard.phone.fragments.ScreenSlidePageFragment;
@@ -96,13 +98,25 @@ public class ScreenSlideActivity extends FragmentActivity implements IModuleCont
     }
 
     @Override
-    public void launchIntent(Intent intent) {
-        startActivity(intent);
+    public void turnQuickMenusOff() {
+
     }
+
+    @Override
+    public void launchIntent(Intent intent, StringResource errorMessage) {
+        startActivity(intent);
+        // TODO: 11. 8. 2015
+    }
+
 
     @Override
     public void swapModules(IModule oldModule, IModule newModule, boolean animate) {
 //TODO
+    }
+
+    @Override
+    public Context getContext() {
+        return this;
     }
 
     private class ScreenSlidePagerAdapter extends FragmentStatePagerAdapter {
