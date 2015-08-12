@@ -20,10 +20,6 @@ public class ScreenSlidePageFragment extends Fragment {
     private static final String TAG = ScreenSlidePageFragment.class.getSimpleName();
     private IModule module;
 
-    private static final int NUM_PAGES = 5;
-    private ViewPager mPager;
-    private PagerAdapter mPagerAdapter;
-
     public static ScreenSlidePageFragment newInstance(IModule module) {
         ScreenSlidePageFragment fragment = new ScreenSlidePageFragment();
         fragment.setModule(module);
@@ -57,8 +53,8 @@ public class ScreenSlidePageFragment extends Fragment {
                              Bundle savedInstanceState) {
         ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_screen_slide_page, container, false);
         LinearLayout cardWrapper = (LinearLayout) rootView.findViewById(R.id.card_wrapper);
-        ViewSwitcher moduleContent = (ViewSwitcher)(this.module.createViewWithHolder(getActivity(), R.layout.module_holder, cardWrapper)).holder;
-        moduleContent.addView(this.module.createQuickMenuView(getActivity(),moduleContent));
+        ViewSwitcher moduleContent = (ViewSwitcher) (this.module.createViewWithHolder(getActivity(), R.layout.module_holder, cardWrapper)).holder;
+        moduleContent.addView(this.module.createQuickMenuView(getActivity(), moduleContent));
         cardWrapper.addView(moduleContent);
         return rootView;
     }
