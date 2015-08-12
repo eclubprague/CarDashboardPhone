@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.ViewSwitcher;
 
 import com.eclubprague.cardashboard.core.data.ModuleSupplier;
+import com.eclubprague.cardashboard.core.modules.base.IActivityStateChangeListener;
 import com.eclubprague.cardashboard.core.modules.base.IModuleContext;
 import com.eclubprague.cardashboard.core.modules.base.IParentModule;
 import com.eclubprague.cardashboard.core.modules.base.IModule;
@@ -23,6 +24,7 @@ import com.eclubprague.cardashboard.phone.R;
 import com.eclubprague.cardashboard.phone.fragments.ScreenSlidePageFragment;
 import com.eclubprague.cardashboard.phone.utils.VerticalViewPager;
 
+import java.util.LinkedList;
 import java.util.List;
 
 public class ScreenSlideActivity extends FragmentActivity implements IModuleContext {
@@ -117,6 +119,45 @@ public class ScreenSlideActivity extends FragmentActivity implements IModuleCont
     @Override
     public Context getContext() {
         return this;
+    }
+
+    List<IActivityStateChangeListener> moduleListeners = new LinkedList<IActivityStateChangeListener>();
+
+    @Override
+    public void addListener(IActivityStateChangeListener listener) {
+        moduleListeners.add(listener);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        for (IActivityStateChangeListener iActivityStateChangeListener : moduleListeners) {
+            iActivityStateChangeListener.onPause();
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        for (IActivityStateChangeListener iActivityStateChangeListener : moduleListeners) {
+            iActivityStateChangeListener.onResume();
+        }
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        for (IActivityStateChangeListener iActivityStateChangeListener : moduleListeners) {
+            iActivityStateChangeListener.onStart();
+        }
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        for (IActivityStateChangeListener iActivityStateChangeListener : moduleListeners) {
+            iActivityStateChangeListener.onStop();
+        }
     }
 
     private class ScreenSlidePagerAdapter extends FragmentStatePagerAdapter {

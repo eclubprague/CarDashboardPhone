@@ -13,6 +13,7 @@ import com.eclubprague.cardashboard.phone.R;
 
 public class ModuleActivity extends ScreenSlideActivity {
     public static final String KEY_PARENT_MODULE = ModuleActivity.class.getName() + ".KEY_PARENT_MODULE";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
