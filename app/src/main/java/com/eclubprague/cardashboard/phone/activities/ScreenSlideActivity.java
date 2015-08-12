@@ -18,6 +18,7 @@ import com.eclubprague.cardashboard.core.modules.base.IActivityStateChangeListen
 import com.eclubprague.cardashboard.core.modules.base.IModuleContext;
 import com.eclubprague.cardashboard.core.modules.base.IParentModule;
 import com.eclubprague.cardashboard.core.modules.base.IModule;
+import com.eclubprague.cardashboard.core.modules.base.ModuleEvent;
 import com.eclubprague.cardashboard.core.modules.base.models.resources.StringResource;
 import com.eclubprague.cardashboard.core.modules.predefined.EmptyModule;
 import com.eclubprague.cardashboard.phone.R;
@@ -87,14 +88,14 @@ public class ScreenSlideActivity extends FragmentActivity implements IModuleCont
     @Override
     public void toggleQuickMenu(IModule module, boolean activate) {
         if (activate) {
-            ViewSwitcher holder = (ViewSwitcher) module.loadHolder();
+            ViewSwitcher holder = (ViewSwitcher) module.getHolder();
             holder.showNext();
             Log.d(TAG, "Toggling quick menu: activating, content: " + holder.getChildCount());
             for (int i = 0; i < holder.getChildCount(); i++) {
                 Log.d(TAG, "child at " + i + ": " + holder.getChildAt(i));
             }
         } else {
-            ViewSwitcher holder = (ViewSwitcher) module.loadHolder();
+            ViewSwitcher holder = (ViewSwitcher) module.getHolder();
             holder.showPrevious();
             Log.d(TAG, "Toggling quick menu: deactivating, content: " + holder.getChildCount());
         }
@@ -127,6 +128,11 @@ public class ScreenSlideActivity extends FragmentActivity implements IModuleCont
     @Override
     public void addListener(IActivityStateChangeListener listener) {
         moduleListeners.add(listener);
+    }
+
+    @Override
+    public void onModuleEvent(IModule module, ModuleEvent event) {
+        //TODO
     }
 
     @Override
