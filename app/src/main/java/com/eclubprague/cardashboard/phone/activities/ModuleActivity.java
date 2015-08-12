@@ -9,6 +9,7 @@ import android.view.MenuItem;
 import com.eclubprague.cardashboard.core.data.ModuleSupplier;
 import com.eclubprague.cardashboard.core.modules.base.IParentModule;
 import com.eclubprague.cardashboard.core.modules.base.models.ModuleId;
+import com.eclubprague.cardashboard.core.preferences.SettingsActivity;
 import com.eclubprague.cardashboard.phone.R;
 
 public class ModuleActivity extends ScreenSlideActivity {
@@ -38,7 +39,8 @@ public class ModuleActivity extends ScreenSlideActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.action_settings) {
-
+            Intent intent = new Intent(this, SettingsActivity.class);
+            startActivity(intent);
 
         }
         return super.onOptionsItemSelected(item);
