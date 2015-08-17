@@ -68,10 +68,6 @@ public class ScreenSlideActivity extends FragmentActivity implements IModuleCont
         initPager();
     }
 
-    private void addEmptyModule() {
-        modules.add(new EmptyModule(this, parentModule, null, null));
-    }
-
 
     @Override
     public void goToSubmodules(IParentModule parentModule) {
@@ -128,6 +124,11 @@ public class ScreenSlideActivity extends FragmentActivity implements IModuleCont
     @Override
     public void addListener(IActivityStateChangeListener listener) {
         moduleListeners.add(listener);
+    }
+
+    @Override
+    public void removeListener(IActivityStateChangeListener listener) {
+        moduleListeners.remove(listener);
     }
 
     @Override

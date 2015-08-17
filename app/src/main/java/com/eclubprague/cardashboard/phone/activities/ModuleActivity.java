@@ -20,11 +20,11 @@ public class ModuleActivity extends ScreenSlideActivity {
         super.onCreate(savedInstanceState);
         IParentModule module;
         if (getIntent() == null || getIntent().getSerializableExtra(KEY_PARENT_MODULE) == null) {
-            module = ModuleSupplier.getInstance().getHomeScreenModule(this);
+            module = ModuleSupplier.getBaseInstance().getHomeScreenModule(this);
         } else {
             Intent intent = getIntent();
             ModuleId parentModuleId = (ModuleId) intent.getSerializableExtra(KEY_PARENT_MODULE);
-            module = ModuleSupplier.getInstance().findSubmenuModule(this, parentModuleId);
+            module = ModuleSupplier.getBaseInstance().findSubmenuModule(this, parentModuleId);
         }
         setModule(module);
     }

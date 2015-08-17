@@ -38,7 +38,7 @@ public class ScreenSlidePageFragment extends Fragment {
         Bundle b = getArguments();
         if (b != null) {
             ModuleId moduleId = (ModuleId) b.getSerializable("moduleId");
-            this.module = ModuleSupplier.getInstance().findModule((IModuleContext) getActivity(), moduleId);
+            this.module = ModuleSupplier.getBaseInstance().findModule((IModuleContext) getActivity(), moduleId);
         }
     }
 
