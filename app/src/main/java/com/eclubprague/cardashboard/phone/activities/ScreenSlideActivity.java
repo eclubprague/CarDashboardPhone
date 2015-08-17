@@ -47,11 +47,7 @@ public class ScreenSlideActivity extends FragmentActivity implements IModuleCont
 
     @Override
     public void onBackPressed() {
-//        if (mPager.getCurrentItem() == 0) {
-//            super.onBackPressed();
-//        } else {
-//            mPager.setCurrentItem(mPager.getCurrentItem() - 1);
-//        }
+        super.onBackPressed();
     }
 
     protected void initPager() {
