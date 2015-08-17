@@ -9,18 +9,14 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.PagerAdapter;
 import android.util.Log;
-import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ViewSwitcher;
 
-import com.eclubprague.cardashboard.core.data.ModuleSupplier;
 import com.eclubprague.cardashboard.core.modules.base.IActivityStateChangeListener;
+import com.eclubprague.cardashboard.core.modules.base.IModule;
 import com.eclubprague.cardashboard.core.modules.base.IModuleContext;
 import com.eclubprague.cardashboard.core.modules.base.IParentModule;
-import com.eclubprague.cardashboard.core.modules.base.IModule;
 import com.eclubprague.cardashboard.core.modules.base.ModuleEvent;
 import com.eclubprague.cardashboard.core.modules.base.models.resources.StringResource;
-import com.eclubprague.cardashboard.core.modules.predefined.EmptyModule;
 import com.eclubprague.cardashboard.phone.R;
 import com.eclubprague.cardashboard.phone.fragments.ScreenSlidePageFragment;
 import com.eclubprague.cardashboard.phone.utils.VerticalViewPager;
@@ -33,7 +29,7 @@ public class ScreenSlideActivity extends FragmentActivity implements IModuleCont
 
 
     private VerticalViewPager mPager;
-
+    private final int SLIDES_COUNT = 10000;
     private PagerAdapter mPagerAdapter;
     private IParentModule parentModule;
     private List<IModule> modules;
@@ -53,7 +49,7 @@ public class ScreenSlideActivity extends FragmentActivity implements IModuleCont
     protected void initPager() {
         mPagerAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager(), modules);
         mPager.setAdapter(mPagerAdapter);
-        mPager.setCurrentItem((int) ((modules.size()) * Math.floor(10000 / modules.size())));
+        mPager.setCurrentItem((int) ((modules.size()) * Math.floor(SLIDES_COUNT / modules.size())));
     }
 
     protected void setModule(IParentModule parentModule) {
@@ -95,19 +91,19 @@ public class ScreenSlideActivity extends FragmentActivity implements IModuleCont
 
     @Override
     public void turnQuickMenusOff() {
-
+        Log.d(TAG, "turnQuickMenusOff");
     }
 
     @Override
     public void launchIntent(Intent intent, StringResource errorMessage) {
         startActivity(intent);
-        // TODO: 11. 8. 2015
+        // TODO:
     }
 
 
     @Override
     public void swapModules(IModule oldModule, IModule newModule, boolean animate) {
-//TODO
+        //TODO
     }
 
     @Override
@@ -180,7 +176,7 @@ public class ScreenSlideActivity extends FragmentActivity implements IModuleCont
 
         @Override
         public int getCount() {
-            return 10000;
+            return SLIDES_COUNT;
         }
     }
 }
