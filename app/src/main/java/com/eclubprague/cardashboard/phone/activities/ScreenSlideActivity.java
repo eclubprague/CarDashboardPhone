@@ -17,6 +17,7 @@ import com.eclubprague.cardashboard.core.modules.base.IModuleContext;
 import com.eclubprague.cardashboard.core.modules.base.IParentModule;
 import com.eclubprague.cardashboard.core.modules.base.ModuleEvent;
 import com.eclubprague.cardashboard.core.modules.base.models.resources.StringResource;
+import com.eclubprague.cardashboard.core.views.ModuleListDialogFragment;
 import com.eclubprague.cardashboard.phone.R;
 import com.eclubprague.cardashboard.phone.fragments.ScreenSlidePageFragment;
 import com.eclubprague.cardashboard.phone.utils.VerticalViewPager;
@@ -49,7 +50,7 @@ public class ScreenSlideActivity extends FragmentActivity implements IModuleCont
     protected void initPager() {
         mPagerAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager(), modules);
         mPager.setAdapter(mPagerAdapter);
-        mPager.setCurrentItem((int) ((modules.size()) * Math.floor(SLIDES_COUNT / modules.size())));
+        mPager.setCurrentItem(5000);
     }
 
     protected void setModule(IParentModule parentModule) {
@@ -75,24 +76,21 @@ public class ScreenSlideActivity extends FragmentActivity implements IModuleCont
 
     @Override
     public void toggleQuickMenu(IModule module, boolean activate) {
+        ViewSwitcher holder = (ViewSwitcher) module.getHolder();
         if (activate) {
-            ViewSwitcher holder = (ViewSwitcher) module.getHolder();
-            holder.showNext();
-            Log.d(TAG, "Toggling quick menu: activating, content: " + holder.getChildCount());
-            for (int i = 0; i < holder.getChildCount(); i++) {
-                Log.d(TAG, "child at " + i + ": " + holder.getChildAt(i));
-            }
+            if (holder.getDisplayedChild() != 1) holder.setDisplayedChild(1);
         } else {
-            ViewSwitcher holder = (ViewSwitcher) module.getHolder();
-            holder.showPrevious();
-            Log.d(TAG, "Toggling quick menu: deactivating, content: " + holder.getChildCount());
+            if (holder.getDisplayedChild() != 0) holder.setDisplayedChild(0);
         }
     }
 
     @Override
     public void turnQuickMenusOff() {
-        Log.d(TAG, "turnQuickMenusOff");
+        for (IModule m : modules) {
+
+        }
     }
+
 
     @Override
     public void launchIntent(Intent intent, StringResource errorMessage) {
@@ -125,7 +123,28 @@ public class ScreenSlideActivity extends FragmentActivity implements IModuleCont
 
     @Override
     public void onModuleEvent(IModule module, ModuleEvent event) {
-        //TODO
+        Log.d("onModuleEvent", event.name());
+        switch (event) {
+            case CANCEL:
+                toggleQuickMenu(module, false);
+                break;
+            case DELETE:
+                break;
+            case MOVE:
+                break;
+            case MORE:
+                break;
+            case ADD:
+                ModuleListDialogFragment dialog = ModuleListDialogFragment.newInstance(this, new ModuleListDialogFragment.OnMultiAddModuleListener() {
+                    @Override
+                    public void addModules(List<IModule> modules) {
+                        Log.d("adding modules", modules.toString());
+                    }
+                });
+                dialog.show(getFragmentManager(), "Applist");
+
+                break;
+        }
     }
 
     @Override
@@ -171,7 +190,10 @@ public class ScreenSlideActivity extends FragmentActivity implements IModuleCont
 
         @Override
         public Fragment getItem(int position) {
-            return ScreenSlidePageFragment.newInstance(modules.get(position % modules.size()));
+            Log.d("position", ""+position);
+            Log.d("position toget", ""+((SLIDES_COUNT/2) % modules.size()));
+            Log.d("modulessize",""+modules.size());
+            return ScreenSlidePageFragment.newInstance(modules.get((SLIDES_COUNT/2) % modules.size()));
         }
 
         @Override
