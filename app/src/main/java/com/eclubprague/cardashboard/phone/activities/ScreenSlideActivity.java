@@ -50,7 +50,7 @@ public class ScreenSlideActivity extends FragmentActivity implements IModuleCont
     protected void initPager() {
         mPagerAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager(), modules);
         mPager.setAdapter(mPagerAdapter);
-        mPager.setCurrentItem(5000);
+        //mPager.setCurrentItem(5000);
     }
 
     protected void setModule(IParentModule parentModule) {
@@ -193,12 +193,14 @@ public class ScreenSlideActivity extends FragmentActivity implements IModuleCont
             Log.d("position", ""+position);
             Log.d("position toget", ""+((SLIDES_COUNT/2) % modules.size()));
             Log.d("modulessize",""+modules.size());
-            return ScreenSlidePageFragment.newInstance(modules.get((SLIDES_COUNT/2) % modules.size()));
+            //return ScreenSlidePageFragment.newInstance(modules.get((SLIDES_COUNT/2) % modules.size()));
+            return ScreenSlidePageFragment.newInstance(modules.get(position));
         }
 
         @Override
         public int getCount() {
-            return SLIDES_COUNT;
+            //return SLIDES_COUNT;
+            return modules.size();
         }
     }
 }
