@@ -5,6 +5,4 @@ android:
      - android-22
 before_install:
   - chmod +x gradlew
-git:
-    submodules: false
 

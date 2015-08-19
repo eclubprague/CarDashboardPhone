@@ -21,6 +21,6 @@ android {
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
-    compile project(':cardashboardcore')
+    compile project(':CarDashboardCore')
     compile 'com.android.support:support-v4:22.2.0'
 }
