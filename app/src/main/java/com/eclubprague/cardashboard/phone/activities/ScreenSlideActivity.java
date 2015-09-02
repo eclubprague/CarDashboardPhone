@@ -11,18 +11,19 @@ import android.support.v4.view.PagerAdapter;
 import android.util.Log;
 import android.widget.ViewSwitcher;
 
+import com.eclubprague.cardashboard.core.application.GlobalApplication;
+import com.eclubprague.cardashboard.core.fragments.ModuleListDialogFragment;
 import com.eclubprague.cardashboard.core.modules.base.IActivityStateChangeListener;
 import com.eclubprague.cardashboard.core.modules.base.IModule;
 import com.eclubprague.cardashboard.core.modules.base.IModuleContext;
 import com.eclubprague.cardashboard.core.modules.base.IParentModule;
 import com.eclubprague.cardashboard.core.modules.base.ModuleEvent;
 import com.eclubprague.cardashboard.core.modules.base.models.resources.StringResource;
-import com.eclubprague.cardashboard.core.views.ModuleListDialogFragment;
+import com.eclubprague.cardashboard.core.obd.DummyGatewayService;
 import com.eclubprague.cardashboard.phone.R;
 import com.eclubprague.cardashboard.phone.fragments.ScreenSlidePageFragment;
 import com.eclubprague.cardashboard.phone.utils.VerticalViewPager;
 
-import java.util.LinkedList;
 import java.util.List;
 
 public class ScreenSlideActivity extends FragmentActivity implements IModuleContext {
@@ -30,7 +31,7 @@ public class ScreenSlideActivity extends FragmentActivity implements IModuleCont
 
 
     private VerticalViewPager mPager;
-    private final int SLIDES_COUNT = 10000;
+    private final int LOOPS_COUNT = 1000;
     private PagerAdapter mPagerAdapter;
     private IParentModule parentModule;
     private List<IModule> modules;
@@ -40,6 +41,12 @@ public class ScreenSlideActivity extends FragmentActivity implements IModuleCont
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_screen_slide);
         mPager = (VerticalViewPager) findViewById(R.id.pager);
+        GlobalApplication.getInstance().setModuleContext(this);
+        if (DummyGatewayService.getInstance() == null) {
+            Intent t = new Intent(this, DummyGatewayService.class);
+            startService(t);
+        }
+
     }
 
     @Override
@@ -50,14 +57,14 @@ public class ScreenSlideActivity extends FragmentActivity implements IModuleCont
     protected void initPager() {
         mPagerAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager(), modules);
         mPager.setAdapter(mPagerAdapter);
-        //mPager.setCurrentItem(5000);
+        mPager.setCurrentItem(modules.size() * LOOPS_COUNT / 2, false);
     }
 
     protected void setModule(IParentModule parentModule) {
         getActionBar().setTitle(parentModule.getTitle().getString(this));
         getActionBar().setIcon(parentModule.getIcon().getIcon(this));
         this.parentModule = parentModule;
-        this.modules = this.parentModule.getSubmodules(this);
+        this.modules = this.parentModule.getSubmodules();
         initPager();
     }
 
@@ -100,25 +107,8 @@ public class ScreenSlideActivity extends FragmentActivity implements IModuleCont
 
 
     @Override
-    public void swapModules(IModule oldModule, IModule newModule, boolean animate) {
-        //TODO
-    }
-
-    @Override
     public Context getContext() {
         return this;
-    }
-
-    List<IActivityStateChangeListener> moduleListeners = new LinkedList<IActivityStateChangeListener>();
-
-    @Override
-    public void addListener(IActivityStateChangeListener listener) {
-        moduleListeners.add(listener);
-    }
-
-    @Override
-    public void removeListener(IActivityStateChangeListener listener) {
-        moduleListeners.remove(listener);
     }
 
     @Override
@@ -150,7 +140,7 @@ public class ScreenSlideActivity extends FragmentActivity implements IModuleCont
     @Override
     protected void onPause() {
         super.onPause();
-        for (IActivityStateChangeListener iActivityStateChangeListener : moduleListeners) {
+        for (IActivityStateChangeListener iActivityStateChangeListener : modules) {
             iActivityStateChangeListener.onPause();
         }
     }
@@ -158,7 +148,7 @@ public class ScreenSlideActivity extends FragmentActivity implements IModuleCont
     @Override
     protected void onResume() {
         super.onResume();
-        for (IActivityStateChangeListener iActivityStateChangeListener : moduleListeners) {
+        for (IActivityStateChangeListener iActivityStateChangeListener : modules) {
             iActivityStateChangeListener.onResume();
         }
     }
@@ -166,7 +156,7 @@ public class ScreenSlideActivity extends FragmentActivity implements IModuleCont
     @Override
     protected void onStart() {
         super.onStart();
-        for (IActivityStateChangeListener iActivityStateChangeListener : moduleListeners) {
+        for (IActivityStateChangeListener iActivityStateChangeListener : modules) {
             iActivityStateChangeListener.onStart();
         }
     }
@@ -174,7 +164,7 @@ public class ScreenSlideActivity extends FragmentActivity implements IModuleCont
     @Override
     protected void onStop() {
         super.onStop();
-        for (IActivityStateChangeListener iActivityStateChangeListener : moduleListeners) {
+        for (IActivityStateChangeListener iActivityStateChangeListener : modules) {
             iActivityStateChangeListener.onStop();
         }
     }
@@ -190,17 +180,13 @@ public class ScreenSlideActivity extends FragmentActivity implements IModuleCont
 
         @Override
         public Fragment getItem(int position) {
-            Log.d("position", ""+position);
-            Log.d("position toget", ""+((SLIDES_COUNT/2) % modules.size()));
-            Log.d("modulessize",""+modules.size());
-            //return ScreenSlidePageFragment.newInstance(modules.get((SLIDES_COUNT/2) % modules.size()));
-            return ScreenSlidePageFragment.newInstance(modules.get(position));
+            return ScreenSlidePageFragment.newInstance(modules.get(position % modules.size()));
         }
 
         @Override
         public int getCount() {
-            //return SLIDES_COUNT;
-            return modules.size();
+            return modules.size() * LOOPS_COUNT;
+            //return modules.size();
         }
     }
 }

@@ -1,1 +1,4 @@
-include ':app', ':CarDashboardCore'
+include ':app'
+include ':cardashboardcore'
+project(':cardashboardcore').projectDir = new File(settingsDir, 'CarDashboardCore')
+

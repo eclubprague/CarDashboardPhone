@@ -1,5 +1,11 @@
 apply plugin: 'com.android.application'
 
+sourceSets {
+    testLocal {
+        java.srcDir file('src/androidTest/java')
+    }
+}
+
 android {
     compileSdkVersion 22
     buildToolsVersion "22.0.1"
@@ -17,10 +23,13 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    sourceSets {
+        instrumentTest.setRoot('src/androidTest/')
+    }
 }
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
-    compile project(':CarDashboardCore')
-    compile 'com.android.support:support-v4:22.2.0'
+    compile project(':cardashboardcore')
+    compile 'com.android.support:support-v4:23.0.0'
 }
