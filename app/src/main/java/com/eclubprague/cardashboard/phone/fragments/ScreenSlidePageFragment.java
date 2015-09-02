@@ -12,6 +12,8 @@ import com.eclubprague.cardashboard.core.data.ModuleSupplier;
 import com.eclubprague.cardashboard.core.modules.base.IModule;
 import com.eclubprague.cardashboard.core.modules.base.IModuleContext;
 import com.eclubprague.cardashboard.core.modules.base.models.ModuleId;
+import com.eclubprague.cardashboard.core.modules.base.models.ViewWithHolder;
+import com.eclubprague.cardashboard.core.views.ModuleView;
 import com.eclubprague.cardashboard.phone.R;
 
 public class ScreenSlidePageFragment extends Fragment {
@@ -36,7 +38,7 @@ public class ScreenSlidePageFragment extends Fragment {
         Bundle b = getArguments();
         if (b != null) {
             ModuleId moduleId = (ModuleId) b.getSerializable("moduleId");
-            this.module = ModuleSupplier.getBaseInstance().findModule((IModuleContext) getActivity(), moduleId);
+            this.module = ModuleSupplier.getPersonalInstance().findModule((IModuleContext) getActivity(), moduleId);
         }
     }
 
@@ -51,8 +53,9 @@ public class ScreenSlidePageFragment extends Fragment {
                              Bundle savedInstanceState) {
         ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_screen_slide_page, container, false);
         LinearLayout cardWrapper = (LinearLayout) rootView.findViewById(R.id.card_wrapper);
-        ViewSwitcher moduleContent = (ViewSwitcher) (this.module.createViewWithHolder((IModuleContext)getActivity(), R.layout.module_holder, cardWrapper)).holder;
-        moduleContent.addView(this.module.createQuickMenuView((IModuleContext)getActivity(), moduleContent));
+        ViewWithHolder<ModuleView> viewWithHolder = this.module.createViewWithHolder((IModuleContext) getActivity(), R.layout.module_holder, cardWrapper);
+        ViewSwitcher moduleContent = (ViewSwitcher) viewWithHolder.holder;
+        moduleContent.addView(this.module.createQuickMenuView(viewWithHolder.view, (IModuleContext) getActivity(), moduleContent));
         cardWrapper.addView(moduleContent);
         return rootView;
     }

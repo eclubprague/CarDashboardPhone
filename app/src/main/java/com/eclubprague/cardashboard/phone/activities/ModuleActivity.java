@@ -3,6 +3,7 @@ package com.eclubprague.cardashboard.phone.activities;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -12,21 +13,34 @@ import com.eclubprague.cardashboard.core.modules.base.models.ModuleId;
 import com.eclubprague.cardashboard.core.preferences.SettingsActivity;
 import com.eclubprague.cardashboard.phone.R;
 
+import java.io.IOException;
+
 public class ModuleActivity extends ScreenSlideActivity {
     public static final String KEY_PARENT_MODULE = ModuleActivity.class.getName() + ".KEY_PARENT_MODULE";
+    public static final String TAG = ModuleActivity.class.getSimpleName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         IParentModule module;
         if (getIntent() == null || getIntent().getSerializableExtra(KEY_PARENT_MODULE) == null) {
-            module = ModuleSupplier.getBaseInstance().getHomeScreenModule(this);
+            module = ModuleSupplier.getPersonalInstance().getHomeScreenModule(this);
         } else {
             Intent intent = getIntent();
             ModuleId parentModuleId = (ModuleId) intent.getSerializableExtra(KEY_PARENT_MODULE);
-            module = ModuleSupplier.getBaseInstance().findSubmenuModule(this, parentModuleId);
+            module = ModuleSupplier.getPersonalInstance().findSubmenuModule(this, parentModuleId);
         }
         setModule(module);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        try {
+            ModuleSupplier.getPersonalInstance().save(this);
+        } catch (IOException e) {
+            Log.e(TAG, "Saving modules was not successful.");
+        }
     }
 
     @Override

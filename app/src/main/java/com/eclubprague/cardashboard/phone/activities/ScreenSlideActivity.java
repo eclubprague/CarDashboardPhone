@@ -1,5 +1,6 @@
 package com.eclubprague.cardashboard.phone.activities;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -19,7 +20,8 @@ import com.eclubprague.cardashboard.core.modules.base.IModuleContext;
 import com.eclubprague.cardashboard.core.modules.base.IParentModule;
 import com.eclubprague.cardashboard.core.modules.base.ModuleEvent;
 import com.eclubprague.cardashboard.core.modules.base.models.resources.StringResource;
-import com.eclubprague.cardashboard.core.obd.DummyGatewayService;
+import com.eclubprague.cardashboard.core.obd.OBDGatewayService;
+import com.eclubprague.cardashboard.core.views.ModuleView;
 import com.eclubprague.cardashboard.phone.R;
 import com.eclubprague.cardashboard.phone.fragments.ScreenSlidePageFragment;
 import com.eclubprague.cardashboard.phone.utils.VerticalViewPager;
@@ -42,8 +44,8 @@ public class ScreenSlideActivity extends FragmentActivity implements IModuleCont
         setContentView(R.layout.activity_screen_slide);
         mPager = (VerticalViewPager) findViewById(R.id.pager);
         GlobalApplication.getInstance().setModuleContext(this);
-        if (DummyGatewayService.getInstance() == null) {
-            Intent t = new Intent(this, DummyGatewayService.class);
+        if (OBDGatewayService.getInstance() == null) {
+            Intent t = new Intent(this, OBDGatewayService.class);
             startService(t);
         }
 
@@ -68,7 +70,6 @@ public class ScreenSlideActivity extends FragmentActivity implements IModuleCont
         initPager();
     }
 
-
     @Override
     public void goToSubmodules(IParentModule parentModule) {
         Intent intent = new Intent(this, ModuleActivity.class);
@@ -82,8 +83,8 @@ public class ScreenSlideActivity extends FragmentActivity implements IModuleCont
     }
 
     @Override
-    public void toggleQuickMenu(IModule module, boolean activate) {
-        ViewSwitcher holder = (ViewSwitcher) module.getHolder();
+    public void toggleQuickMenu(IModule module, ModuleView moduleView, boolean activate) {
+        ViewSwitcher holder = (ViewSwitcher) moduleView.getViewHolder();
         if (activate) {
             if (holder.getDisplayedChild() != 1) holder.setDisplayedChild(1);
         } else {
@@ -98,13 +99,11 @@ public class ScreenSlideActivity extends FragmentActivity implements IModuleCont
         }
     }
 
-
     @Override
     public void launchIntent(Intent intent, StringResource errorMessage) {
         startActivity(intent);
         // TODO:
     }
-
 
     @Override
     public Context getContext() {
@@ -112,11 +111,11 @@ public class ScreenSlideActivity extends FragmentActivity implements IModuleCont
     }
 
     @Override
-    public void onModuleEvent(IModule module, ModuleEvent event) {
+    public void onModuleEvent(IModule module, ModuleView moduleView, ModuleEvent event) {
         Log.d("onModuleEvent", event.name());
         switch (event) {
             case CANCEL:
-                toggleQuickMenu(module, false);
+                toggleQuickMenu(module, moduleView, false);
                 break;
             case DELETE:
                 break;
@@ -138,26 +137,33 @@ public class ScreenSlideActivity extends FragmentActivity implements IModuleCont
     }
 
     @Override
+    public Activity getActivity() {
+        return this;
+    }
+
+    @Override
     protected void onPause() {
         super.onPause();
         for (IActivityStateChangeListener iActivityStateChangeListener : modules) {
-            iActivityStateChangeListener.onPause();
+            iActivityStateChangeListener.onPause(this);
         }
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+        GlobalApplication.getInstance().setModuleContext(this);
         for (IActivityStateChangeListener iActivityStateChangeListener : modules) {
-            iActivityStateChangeListener.onResume();
+            iActivityStateChangeListener.onResume(this);
         }
     }
 
     @Override
     protected void onStart() {
         super.onStart();
+        GlobalApplication.getInstance().setModuleContext(this);
         for (IActivityStateChangeListener iActivityStateChangeListener : modules) {
-            iActivityStateChangeListener.onStart();
+            iActivityStateChangeListener.onStart(this);
         }
     }
 
@@ -165,7 +171,7 @@ public class ScreenSlideActivity extends FragmentActivity implements IModuleCont
     protected void onStop() {
         super.onStop();
         for (IActivityStateChangeListener iActivityStateChangeListener : modules) {
-            iActivityStateChangeListener.onStop();
+            iActivityStateChangeListener.onStop(this);
         }
     }
 
