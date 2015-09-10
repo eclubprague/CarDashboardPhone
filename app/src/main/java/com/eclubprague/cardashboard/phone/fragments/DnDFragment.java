@@ -1,4 +1,4 @@
-package com.eclubprague.cardashboard.phone.dragndropmenu;
+package com.eclubprague.cardashboard.phone.fragments;
 
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
@@ -19,7 +19,7 @@ import java.util.Arrays;
 import java.util.List;
 
 
-public class DSLVFragment extends ListFragment {
+public class DnDFragment extends ListFragment {
 
     private ArrayAdapter<String> mAdapter;
 
@@ -53,7 +53,7 @@ public class DSLVFragment extends ListFragment {
     public boolean dragEnabled = true;
 
 
-    public DSLVFragment() {
+    public DnDFragment() {
         super();
     }
 

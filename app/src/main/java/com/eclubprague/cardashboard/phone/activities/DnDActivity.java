@@ -1,4 +1,4 @@
-package com.eclubprague.cardashboard.phone.dragndropmenu;
+package com.eclubprague.cardashboard.phone.activities;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -6,13 +6,14 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.view.Menu;
 
+import com.eclubprague.cardashboard.phone.fragments.DnDFragment;
 import com.mobeta.android.dslv.DragSortController;
 
 
-public class TestBedDSLV extends FragmentActivity {
+public class DnDActivity extends FragmentActivity {
 
     private static final String TAG_DSLV_FRAGMENT = "dslv_fragment";
-    public static final String TAG = TestBedDSLV.class.getSimpleName();
+    public static final String TAG = DnDActivity.class.getSimpleName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,7 +34,7 @@ public class TestBedDSLV extends FragmentActivity {
 
 
     private Fragment getNewDslvFragment() {
-        DSLVFragment f = new DSLVFragment();
+        DnDFragment f = new DnDFragment();
         f.removeMode = DragSortController.FLING_REMOVE;
         f.removeEnabled = true;
         f.dragStartMode = DragSortController.ON_DRAG;
