@@ -12,6 +12,9 @@
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/CarDashboardCore" />
             <option value="$PROJECT_DIR$/app" />
+            <option value="$PROJECT_DIR$/libraries" />
+            <option value="$PROJECT_DIR$/libraries/drag-sort-listview" />
+            <option value="$PROJECT_DIR$/libraries/drag-sort-listview/library" />
           </set>
         </option>
       </GradleProjectSettings>

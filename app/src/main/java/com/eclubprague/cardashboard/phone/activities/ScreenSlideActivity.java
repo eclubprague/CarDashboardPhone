@@ -12,14 +12,14 @@ import android.support.v4.view.PagerAdapter;
 import android.util.Log;
 import android.widget.ViewSwitcher;
 
-import com.eclubprague.cardashboard.core.application.GlobalApplication;
+import com.eclubprague.cardashboard.core.application.GlobalDataProvider;
 import com.eclubprague.cardashboard.core.fragments.ModuleListDialogFragment;
+import com.eclubprague.cardashboard.core.model.resources.StringResource;
 import com.eclubprague.cardashboard.core.modules.base.IActivityStateChangeListener;
 import com.eclubprague.cardashboard.core.modules.base.IModule;
 import com.eclubprague.cardashboard.core.modules.base.IModuleContext;
 import com.eclubprague.cardashboard.core.modules.base.IParentModule;
 import com.eclubprague.cardashboard.core.modules.base.ModuleEvent;
-import com.eclubprague.cardashboard.core.modules.base.models.resources.StringResource;
 import com.eclubprague.cardashboard.core.obd.OBDGatewayService;
 import com.eclubprague.cardashboard.core.views.ModuleView;
 import com.eclubprague.cardashboard.phone.R;
@@ -43,7 +43,7 @@ public class ScreenSlideActivity extends FragmentActivity implements IModuleCont
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_screen_slide);
         mPager = (VerticalViewPager) findViewById(R.id.pager);
-        GlobalApplication.getInstance().setModuleContext(this);
+        GlobalDataProvider.getInstance().setModuleContext(this);
         if (OBDGatewayService.getInstance() == null) {
             Intent t = new Intent(this, OBDGatewayService.class);
             startService(t);
@@ -152,7 +152,7 @@ public class ScreenSlideActivity extends FragmentActivity implements IModuleCont
     @Override
     protected void onResume() {
         super.onResume();
-        GlobalApplication.getInstance().setModuleContext(this);
+        GlobalDataProvider.getInstance().setModuleContext(this);
         for (IActivityStateChangeListener iActivityStateChangeListener : modules) {
             iActivityStateChangeListener.onResume(this);
         }
@@ -161,7 +161,7 @@ public class ScreenSlideActivity extends FragmentActivity implements IModuleCont
     @Override
     protected void onStart() {
         super.onStart();
-        GlobalApplication.getInstance().setModuleContext(this);
+        GlobalDataProvider.getInstance().setModuleContext(this);
         for (IActivityStateChangeListener iActivityStateChangeListener : modules) {
             iActivityStateChangeListener.onStart(this);
         }

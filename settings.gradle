@@ -1,4 +1,5 @@
 include ':app'
 include ':cardashboardcore'
+include ':libraries:drag-sort-listview:library'
 project(':cardashboardcore').projectDir = new File(settingsDir, 'CarDashboardCore')
 

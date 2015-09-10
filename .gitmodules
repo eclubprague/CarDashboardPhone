@@ -1,3 +1,9 @@
 [submodule "CarDashboardCore"]
 	path = CarDashboardCore
 	url = https://github.com/eclubprague/CarDashboardCore.git
+[submodule "drag-sort-listview"]
+	path = drag-sort-listview
+	url = https://github.com/JayH5/drag-sort-listview.git
+[submodule "libraries/drag-sort-listview"]
+	path = libraries/drag-sort-listview
+	url = https://github.com/JayH5/drag-sort-listview.git

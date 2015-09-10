@@ -55,7 +55,7 @@ public class ScreenSlidePageFragment extends Fragment {
         LinearLayout cardWrapper = (LinearLayout) rootView.findViewById(R.id.card_wrapper);
         ViewWithHolder<ModuleView> viewWithHolder = this.module.createViewWithHolder((IModuleContext) getActivity(), R.layout.module_holder, cardWrapper);
         ViewSwitcher moduleContent = (ViewSwitcher) viewWithHolder.holder;
-        moduleContent.addView(this.module.createQuickMenuView(viewWithHolder.view, (IModuleContext) getActivity(), moduleContent));
+        moduleContent.addView(this.module.createQuickMenuView((IModuleContext) getActivity(), moduleContent));
         cardWrapper.addView(moduleContent);
         return rootView;
     }
