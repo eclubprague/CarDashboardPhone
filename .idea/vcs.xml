@@ -2,7 +2,7 @@
 <project version="4">
   <component name="VcsDirectoryMappings">
     <mapping directory="$PROJECT_DIR$" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/CarDashboardCore" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/libraries/CarDashboardCore" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/libraries/drag-sort-listview" vcs="Git" />
   </component>
 </project>

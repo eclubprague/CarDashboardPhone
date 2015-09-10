@@ -2,4 +2,5 @@
 <resources>
     <item name="drag_handle" type="id">0</item>
     <item name="click_remove" type="id" />
+    <item name="test_bed" type="id" />
 </resources>

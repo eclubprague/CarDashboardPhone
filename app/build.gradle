@@ -30,7 +30,7 @@ android {
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
-    compile project(':cardashboardcore')
+    compile project(':libraries:CarDashboardCore')
     compile 'com.android.support:support-v4:23.0.0'
     compile project(':libraries:drag-sort-listview:library')
 }

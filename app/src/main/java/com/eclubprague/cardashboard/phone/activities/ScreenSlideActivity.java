@@ -10,6 +10,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.PagerAdapter;
 import android.util.Log;
+import android.view.View;
 import android.widget.ViewSwitcher;
 
 import com.eclubprague.cardashboard.core.application.GlobalDataProvider;
@@ -83,8 +84,8 @@ public class ScreenSlideActivity extends FragmentActivity implements IModuleCont
     }
 
     @Override
-    public void toggleQuickMenu(IModule module, ModuleView moduleView, boolean activate) {
-        ViewSwitcher holder = (ViewSwitcher) moduleView.getViewHolder();
+    public void toggleQuickMenu(IModule module, boolean activate) {
+        ViewSwitcher holder = (ViewSwitcher) module.getHolder();
         if (activate) {
             if (holder.getDisplayedChild() != 1) holder.setDisplayedChild(1);
         } else {
@@ -111,11 +112,11 @@ public class ScreenSlideActivity extends FragmentActivity implements IModuleCont
     }
 
     @Override
-    public void onModuleEvent(IModule module, ModuleView moduleView, ModuleEvent event) {
+    public void onModuleEvent(IModule module, ModuleEvent event) {
         Log.d("onModuleEvent", event.name());
         switch (event) {
             case CANCEL:
-                toggleQuickMenu(module, moduleView, false);
+                toggleQuickMenu(module, false);
                 break;
             case DELETE:
                 break;
@@ -139,6 +140,11 @@ public class ScreenSlideActivity extends FragmentActivity implements IModuleCont
     @Override
     public Activity getActivity() {
         return this;
+    }
+
+    @Override
+    public View getSnackbarHolder() {
+        return null;
     }
 
     @Override

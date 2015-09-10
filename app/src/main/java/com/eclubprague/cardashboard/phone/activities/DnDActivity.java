@@ -6,6 +6,7 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.view.Menu;
 
+import com.eclubprague.cardashboard.phone.R;
 import com.eclubprague.cardashboard.phone.fragments.DnDFragment;
 import com.mobeta.android.dslv.DragSortController;
 
