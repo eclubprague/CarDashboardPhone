@@ -10,12 +10,18 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.eclubprague.cardashboard.core.application.GlobalDataProvider;
+import com.eclubprague.cardashboard.core.data.database.ModuleDAO;
+import com.eclubprague.cardashboard.core.modules.base.IModule;
+import com.eclubprague.cardashboard.core.modules.base.IParentModule;
 import com.eclubprague.cardashboard.phone.R;
 import com.mobeta.android.dslv.DragSortController;
 import com.mobeta.android.dslv.DragSortListView;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
 
 
@@ -96,10 +102,21 @@ public class DnDFragment extends ListFragment {
         mDslv.setRemoveListener(mRemoveListener);
 
 
-        String[] array = {"first", "second", "third"};
-        List<String> list = new ArrayList<>(Arrays.asList(array));
+        IParentModule parentModule = null;
+        try {
+            parentModule = ModuleDAO.loadParentModule(GlobalDataProvider.getInstance().getContext());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        if (parentModule == null) return;
 
-        mAdapter = new ArrayAdapter<>(getActivity(), R.layout.list_item_handle_left, R.id.text, list);
+
+        List<String> names = new LinkedList<>();
+        for (IModule module : parentModule.getSubmodules()) {
+            names.add(module.getTitle().getString());
+        }
+
+        mAdapter = new ArrayAdapter<>(getActivity(), R.layout.list_item_handle_left, R.id.text, names);
         setListAdapter(mAdapter);
         ListView lv = getListView();
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
