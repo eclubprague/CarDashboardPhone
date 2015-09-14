@@ -96,7 +96,7 @@ public class DnDFragment extends ListFragment {
         mDslv.setRemoveListener(mRemoveListener);
 
 
-        String[] array = getResources().getStringArray(R.array.jazz_artist_names);
+        String[] array = {"first", "second", "third"};
         List<String> list = new ArrayList<>(Arrays.asList(array));
 
         mAdapter = new ArrayAdapter<>(getActivity(), R.layout.list_item_handle_left, R.id.text, list);

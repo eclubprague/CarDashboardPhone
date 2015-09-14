@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.eclubprague.cardashboard.phone">
+
     <application
         android:name="com.eclubprague.cardashboard.core.application.UpdateApplication"
         android:allowBackup="true"
@@ -12,8 +13,14 @@
             android:name=".activities.ScreenSlideActivity"
             android:label="@string/title_activity_screen_slide" />
         <activity
-            android:name="com.eclubprague.cardashboard.core.preferences.SettingsActivity"
-            android:label="@string/title_activity_settings" />
+            android:name=".activities.PhoneSettingsActivity"
+            android:label="@string/title_activity_settings"></activity>
+        <activity android:name=".activities.DnDActivity">
+            <intent-filter>
+                <action android:name="modules.order" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".activities.ModuleActivity"
             android:label="@string/title_activity_module">

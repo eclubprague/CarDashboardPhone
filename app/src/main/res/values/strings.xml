@@ -14,4 +14,5 @@
     <string name="title_activity_main2">Main2Activity</string>
     <string name="title_activity_screen_slide">ScreenSlideActivity</string>
     <string name="title_activity_module">Car Dashboard</string>
+    <string name="order_of_modules">Order of modules</string>
 </resources>
