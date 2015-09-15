@@ -16,14 +16,18 @@ public class DnDActivity extends FragmentActivity {
     private static final String TAG_DSLV_FRAGMENT = "dslv_fragment";
     public static final String TAG = DnDActivity.class.getSimpleName();
 
+    private Fragment mFragment;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (mFragment == null)
+            mFragment = getNewDslvFragment();
         setContentView(R.layout.test_bed_main);
         FragmentManager fm = getSupportFragmentManager();
         if (fm.findFragmentByTag(TAG_DSLV_FRAGMENT) == null) {
             fm.beginTransaction()
-                    .add(R.id.test_bed, getNewDslvFragment(), TAG_DSLV_FRAGMENT)
+                    .add(R.id.test_bed, mFragment, TAG_DSLV_FRAGMENT)
                     .commit();
         }
     }
@@ -31,6 +35,10 @@ public class DnDActivity extends FragmentActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         return true;
+    }
+
+    public void setFragment(Fragment f) {
+        mFragment = f;
     }
 
 
