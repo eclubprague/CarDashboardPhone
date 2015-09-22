@@ -11,23 +11,20 @@
         >
         <activity
             android:name=".activities.ScreenSlideActivity"
-            android:label="@string/title_activity_screen_slide" />
+            android:label="@string/title_activity_screen_slide">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity
+
             android:name=".activities.PhoneSettingsActivity"
             android:label="@string/title_activity_settings"></activity>
         <activity android:name=".activities.DnDActivity">
             <intent-filter>
                 <action android:name="modules.order" />
                 <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
-        <activity
-            android:name=".activities.ModuleActivity"
-            android:label="@string/title_activity_module">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
     </application>

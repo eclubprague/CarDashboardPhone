@@ -10,10 +10,14 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.PagerAdapter;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ViewSwitcher;
 
 import com.eclubprague.cardashboard.core.application.GlobalDataProvider;
+import com.eclubprague.cardashboard.core.data.ModuleSupplier;
+import com.eclubprague.cardashboard.core.data.database.ModuleDAO;
 import com.eclubprague.cardashboard.core.fragments.ModuleListDialogFragment;
 import com.eclubprague.cardashboard.core.model.resources.StringResource;
 import com.eclubprague.cardashboard.core.modules.base.IActivityStateChangeListener;
@@ -21,12 +25,13 @@ import com.eclubprague.cardashboard.core.modules.base.IModule;
 import com.eclubprague.cardashboard.core.modules.base.IModuleContext;
 import com.eclubprague.cardashboard.core.modules.base.IParentModule;
 import com.eclubprague.cardashboard.core.modules.base.ModuleEvent;
+import com.eclubprague.cardashboard.core.modules.base.models.ModuleId;
 import com.eclubprague.cardashboard.core.obd.OBDGatewayService;
-import com.eclubprague.cardashboard.core.views.ModuleView;
 import com.eclubprague.cardashboard.phone.R;
 import com.eclubprague.cardashboard.phone.fragments.ScreenSlidePageFragment;
 import com.eclubprague.cardashboard.phone.utils.VerticalViewPager;
 
+import java.io.IOException;
 import java.util.List;
 
 public class ScreenSlideActivity extends FragmentActivity implements IModuleContext {
@@ -38,6 +43,9 @@ public class ScreenSlideActivity extends FragmentActivity implements IModuleCont
     private PagerAdapter mPagerAdapter;
     private IParentModule parentModule;
     private List<IModule> modules;
+    public static final String KEY_PARENT_MODULE = ScreenSlideActivity.class.getName() + ".KEY_PARENT_MODULE";
+    public static final String KEY_PREVIOUS_PARENT_MODULE = ScreenSlideActivity.class.getName() + ".KEY_PREVIOUS_PARENT_MODULE";
+    public static boolean modulesOrderChanged = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +57,17 @@ public class ScreenSlideActivity extends FragmentActivity implements IModuleCont
             Intent t = new Intent(this, OBDGatewayService.class);
             startService(t);
         }
+
+        IParentModule module;
+        if (getIntent() == null || getIntent().getSerializableExtra(KEY_PARENT_MODULE) == null) {
+            module = ModuleSupplier.getPersonalInstance().getHomeScreenModule(this);
+            Log.d(TAG, module.getSubmodules().toString());
+        } else {
+            Intent intent = getIntent();
+            ModuleId parentModuleId = (ModuleId) intent.getSerializableExtra(KEY_PARENT_MODULE);
+            module = ModuleSupplier.getPersonalInstance().findSubmenuModule(this, parentModuleId);
+        }
+        setModule(module);
 
     }
 
@@ -73,8 +92,8 @@ public class ScreenSlideActivity extends FragmentActivity implements IModuleCont
 
     @Override
     public void goToSubmodules(IParentModule parentModule) {
-        Intent intent = new Intent(this, ModuleActivity.class);
-        intent.putExtra(ModuleActivity.KEY_PARENT_MODULE, parentModule.getId());
+        Intent intent = new Intent(this, ScreenSlideActivity.class);
+        intent.putExtra(KEY_PARENT_MODULE, parentModule.getId());
         startActivity(intent);
     }
 
@@ -153,11 +172,47 @@ public class ScreenSlideActivity extends FragmentActivity implements IModuleCont
         for (IActivityStateChangeListener iActivityStateChangeListener : modules) {
             iActivityStateChangeListener.onPause(this);
         }
+//        try {
+//            ModuleSupplier.getPersonalInstance().save(this);
+//        } catch (IOException e) {
+//            Log.e(TAG, "Saving modules was not successful.");
+//        }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_screen_slide, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == R.id.action_settings) {
+            Intent intent = new Intent(this, PhoneSettingsActivity.class);
+            startActivity(intent);
+
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+        if (modulesOrderChanged) {
+            modulesOrderChanged = false;
+            for (IActivityStateChangeListener listener : modules) {
+                listener.onDestroy(this);
+            }
+            Intent intent = getIntent();
+            overridePendingTransition(0, 0);
+            intent.putExtra("nothing", false);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+            finish();
+            overridePendingTransition(0, 0);
+            startActivity(intent);
+            return;
+        }
         GlobalDataProvider.getInstance().setModuleContext(this);
         for (IActivityStateChangeListener iActivityStateChangeListener : modules) {
             iActivityStateChangeListener.onResume(this);
@@ -180,6 +235,7 @@ public class ScreenSlideActivity extends FragmentActivity implements IModuleCont
             iActivityStateChangeListener.onStop(this);
         }
     }
+
 
     private class ScreenSlidePagerAdapter extends FragmentStatePagerAdapter {
         List<IModule> modules;

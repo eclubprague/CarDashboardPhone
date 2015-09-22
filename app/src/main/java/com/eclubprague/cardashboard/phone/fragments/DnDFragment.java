@@ -1,57 +1,63 @@
 package com.eclubprague.cardashboard.phone.fragments;
 
-import android.app.Fragment;
-import android.app.FragmentTransaction;
-import android.content.Context;
-import android.content.Intent;
-import android.os.Bundle;
-import android.support.v4.app.ListFragment;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
-import android.widget.TextView;
-import android.widget.Toast;
+                    import android.app.Fragment;
+                    import android.app.FragmentTransaction;
+                    import android.content.Context;
+                    import android.content.Intent;
+                    import android.os.Bundle;
+                    import android.support.v4.app.ListFragment;
+                    import android.util.Log;
+                    import android.view.LayoutInflater;
+                    import android.view.View;
+                    import android.view.ViewGroup;
+                    import android.widget.AdapterView;
+                    import android.widget.ArrayAdapter;
+                    import android.widget.ListView;
+                    import android.widget.TextView;
+                    import android.widget.Toast;
 
-import com.eclubprague.cardashboard.core.application.GlobalDataProvider;
-import com.eclubprague.cardashboard.core.data.database.ModuleDAO;
-import com.eclubprague.cardashboard.core.modules.base.IModule;
-import com.eclubprague.cardashboard.core.modules.base.IParentModule;
-import com.eclubprague.cardashboard.phone.R;
-import com.eclubprague.cardashboard.phone.activities.DnDActivity;
-import com.mobeta.android.dslv.DragSortController;
-import com.mobeta.android.dslv.DragSortListView;
+                    import com.eclubprague.cardashboard.core.application.GlobalDataProvider;
+                    import com.eclubprague.cardashboard.core.data.ModuleSupplier;
+                    import com.eclubprague.cardashboard.core.data.database.ModuleDAO;
+                    import com.eclubprague.cardashboard.core.modules.base.IModule;
+                    import com.eclubprague.cardashboard.core.modules.base.IParentModule;
+                    import com.eclubprague.cardashboard.core.modules.base.models.ModuleId;
+                    import com.eclubprague.cardashboard.phone.R;
+                    import com.eclubprague.cardashboard.phone.activities.DnDActivity;
+                    import com.eclubprague.cardashboard.phone.activities.ScreenSlideActivity;
+                    import com.mobeta.android.dslv.DragSortController;
+                    import com.mobeta.android.dslv.DragSortListView;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
+                    import java.io.IOException;
+                    import java.util.ArrayList;
+                    import java.util.Arrays;
+                    import java.util.LinkedList;
+                    import java.util.List;
 
 
-public class DnDFragment extends ListFragment {
+                    public class DnDFragment extends ListFragment {
 
-    public static String TAG = DnDFragment.class.getSimpleName();
-    private ArrayAdapter<IModule> mAdapter;
-    private IParentModule mParentModule;
+                        public static String TAG = DnDFragment.class.getSimpleName();
+                        private ArrayAdapter<IModule> mAdapter;
+                        private IParentModule mParentModule;
 
-    public static final String PARENT_MODULES_SCOPE_ID = "parentModulesScopeId";
-    private static ArrayList<IParentModule> parentModulesScope = new ArrayList<>();
-    private static int parentModulesScopeId = 0;
+                        public static final String PARENT_MODULES_SCOPE_ID = "parentModulesScopeId";
 
-    private final DragSortListView.DropListener mDropListener =
-            new DragSortListView.DropListener() {
-                @Override
-                public void drop(int from, int to) {
-                    if (from != to) {
+
+                        private final DragSortListView.DropListener mDropListener =
+                                new DragSortListView.DropListener() {
+                                    @Override
+                                    public void drop(int from, int to) {
+
+                                        if (from != to) {
+                        Log.d(TAG, mParentModule.getSubmodules().toString());
                         IModule item = mAdapter.getItem(from);
                         mAdapter.remove(item);
                         mAdapter.insert(item, to);
                         try {
-                            ModuleDAO.saveParentModuleAsync(GlobalDataProvider.getInstance().getContext(), mParentModule);
+                            ModuleDAO.saveParentModuleAsync(GlobalDataProvider.getInstance().getActivity(), mParentModule);
+                            Log.d(TAG, mParentModule.getSubmodules().toString());
+                            ScreenSlideActivity.modulesOrderChanged = true;
                         } catch (IOException e) {
                             Log.e(TAG, e.getMessage());
                         }
@@ -118,15 +124,13 @@ public class DnDFragment extends ListFragment {
         mDslv.setDropListener(mDropListener);
         mDslv.setRemoveListener(mRemoveListener);
 
-        int parentScopeId = this.getActivity().getIntent().getIntExtra(DnDFragment.PARENT_MODULES_SCOPE_ID, -1);
-        if (parentScopeId == -1) {
-            try {
-                mParentModule = ModuleDAO.loadParentModule(GlobalDataProvider.getInstance().getContext());
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+        ModuleId parentModuleId = (ModuleId) getActivity().getIntent().getSerializableExtra(DnDFragment.PARENT_MODULES_SCOPE_ID);
+        if (parentModuleId == null) {
+
+                mParentModule = ModuleSupplier.getPersonalInstance().getHomeScreenModule(GlobalDataProvider.getInstance().getModuleContext());
+
         } else {
-            mParentModule = parentModulesScope.get(parentScopeId);
+            mParentModule = (IParentModule) ModuleSupplier.getPersonalInstance().findModule(GlobalDataProvider.getInstance().getModuleContext(), parentModuleId);
         }
         if (mParentModule == null) return;
 
@@ -142,10 +146,9 @@ public class DnDFragment extends ListFragment {
                 IModule current = mAdapter.getItem(clickedItemNumber);
                 if (current instanceof IParentModule) {
 
-                    parentModulesScope.add((IParentModule) current);
-                    parentModulesScopeId++;
+
                     Intent intent = new Intent(getActivity(), DnDActivity.class);
-                    intent.putExtra(DnDFragment.PARENT_MODULES_SCOPE_ID, parentModulesScopeId - 1);
+                    intent.putExtra(DnDFragment.PARENT_MODULES_SCOPE_ID, current.getId());
                     startActivity(intent);
                 }
             }
@@ -160,8 +163,6 @@ public class DnDFragment extends ListFragment {
 //            }
 //        });
     }
-
-
 
 
     private class IModuleArrayAdapter extends ArrayAdapter<IModule> {
