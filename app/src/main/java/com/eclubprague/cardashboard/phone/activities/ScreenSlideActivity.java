@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ViewSwitcher;
 
 import com.eclubprague.cardashboard.core.application.GlobalDataProvider;
@@ -90,15 +91,16 @@ public class ScreenSlideActivity extends FragmentActivity implements IModuleCont
         initPager();
     }
 
+
     @Override
-    public void goToSubmodules(IParentModule parentModule) {
+    public void goToParentModule(IParentModule parentModule) {
         Intent intent = new Intent(this, ScreenSlideActivity.class);
         intent.putExtra(KEY_PARENT_MODULE, parentModule.getId());
         startActivity(intent);
     }
 
     @Override
-    public void goBackFromSubmodules(IParentModule parentModule) {
+    public void goBackFromParentModule(IParentModule previousParentModule) {
         finish();
     }
 
@@ -162,8 +164,8 @@ public class ScreenSlideActivity extends FragmentActivity implements IModuleCont
     }
 
     @Override
-    public View getSnackbarHolder() {
-        return null;
+    public ViewGroup getSnackbarHolder() {
+        return null; //TODO
     }
 
     @Override
