@@ -169,6 +169,16 @@ public class ScreenSlideActivity extends FragmentActivity implements IModuleCont
     }
 
     @Override
+    public void restartActivity() {
+
+    }
+
+    @Override
+    public void restartApplication() {
+
+    }
+
+    @Override
     protected void onPause() {
         super.onPause();
         for (IActivityStateChangeListener iActivityStateChangeListener : modules) {

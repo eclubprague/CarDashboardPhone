@@ -18,11 +18,12 @@ package com.eclubprague.cardashboard.phone.fab;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.android.common.logger.Log;
+import com.eclubprague.cardashboard.phone.R;
 
 
 /**
@@ -31,7 +32,7 @@ import com.example.android.common.logger.Log;
  */
 public class FloatingActionButtonBasicFragment extends Fragment implements FloatingActionButton.OnCheckedChangeListener{
 
-    private final static String TAG = "FloatingActionButtonBasicFragment";
+    private final static String TAG = "FActionButtonBasicFragment";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
