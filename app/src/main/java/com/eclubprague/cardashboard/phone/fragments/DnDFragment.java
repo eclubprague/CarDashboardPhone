@@ -1,55 +1,57 @@
 package com.eclubprague.cardashboard.phone.fragments;
 
-                    import android.app.Fragment;
-                    import android.app.FragmentTransaction;
-                    import android.content.Context;
-                    import android.content.Intent;
-                    import android.os.Bundle;
-                    import android.support.v4.app.ListFragment;
-                    import android.util.Log;
-                    import android.view.LayoutInflater;
-                    import android.view.View;
-                    import android.view.ViewGroup;
-                    import android.widget.AdapterView;
-                    import android.widget.ArrayAdapter;
-                    import android.widget.ListView;
-                    import android.widget.TextView;
-                    import android.widget.Toast;
+import android.app.Fragment;
+import android.app.FragmentTransaction;
+import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
+import android.support.v4.app.ListFragment;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.FrameLayout;
+import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
 
-                    import com.eclubprague.cardashboard.core.application.GlobalDataProvider;
-                    import com.eclubprague.cardashboard.core.data.ModuleSupplier;
-                    import com.eclubprague.cardashboard.core.data.database.ModuleDAO;
-                    import com.eclubprague.cardashboard.core.modules.base.IModule;
-                    import com.eclubprague.cardashboard.core.modules.base.IParentModule;
-                    import com.eclubprague.cardashboard.core.modules.base.models.ModuleId;
-                    import com.eclubprague.cardashboard.phone.R;
-                    import com.eclubprague.cardashboard.phone.activities.DnDActivity;
-                    import com.eclubprague.cardashboard.phone.activities.ScreenSlideActivity;
-                    import com.mobeta.android.dslv.DragSortController;
-                    import com.mobeta.android.dslv.DragSortListView;
+import com.eclubprague.cardashboard.core.application.GlobalDataProvider;
+import com.eclubprague.cardashboard.core.data.ModuleSupplier;
+import com.eclubprague.cardashboard.core.data.database.ModuleDAO;
+import com.eclubprague.cardashboard.core.modules.base.IModule;
+import com.eclubprague.cardashboard.core.modules.base.IParentModule;
+import com.eclubprague.cardashboard.core.modules.base.models.ModuleId;
+import com.eclubprague.cardashboard.phone.R;
+import com.eclubprague.cardashboard.phone.activities.DnDActivity;
+import com.eclubprague.cardashboard.phone.activities.ScreenSlideActivity;
+import com.eclubprague.cardashboard.phone.fab.FloatingActionButton;
+import com.mobeta.android.dslv.DragSortController;
+import com.mobeta.android.dslv.DragSortListView;
 
-                    import java.io.IOException;
-                    import java.util.ArrayList;
-                    import java.util.Arrays;
-                    import java.util.LinkedList;
-                    import java.util.List;
-
-
-                    public class DnDFragment extends ListFragment {
-
-                        public static String TAG = DnDFragment.class.getSimpleName();
-                        private ArrayAdapter<IModule> mAdapter;
-                        private IParentModule mParentModule;
-
-                        public static final String PARENT_MODULES_SCOPE_ID = "parentModulesScopeId";
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
 
 
-                        private final DragSortListView.DropListener mDropListener =
-                                new DragSortListView.DropListener() {
-                                    @Override
-                                    public void drop(int from, int to) {
+public class DnDFragment extends Fragment implements FloatingActionButton.OnCheckedChangeListener {
 
-                                        if (from != to) {
+    public static String TAG = DnDFragment.class.getSimpleName();
+    private ArrayAdapter<IModule> mAdapter;
+    private IParentModule mParentModule;
+
+    public static final String PARENT_MODULES_SCOPE_ID = "parentModulesScopeId";
+
+
+    private final DragSortListView.DropListener mDropListener =
+            new DragSortListView.DropListener() {
+                @Override
+                public void drop(int from, int to) {
+
+                    if (from != to) {
                         Log.d(TAG, mParentModule.getSubmodules().toString());
                         IModule item = mAdapter.getItem(from);
                         mAdapter.remove(item);
@@ -94,7 +96,8 @@ package com.eclubprague.cardashboard.phone.fragments;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        mDslv = (DragSortListView) inflater.inflate(R.layout.dslv_fragment_main, container, false);
+        View rootview = inflater.inflate(R.layout.dslv_fragment_main, container, false);
+        mDslv = (DragSortListView) rootview.findViewById(R.id.DndList);
 
         // defaults are
         //   dragStartMode = onDown
@@ -111,15 +114,18 @@ package com.eclubprague.cardashboard.phone.fragments;
         mDslv.setFloatViewManager(mController);
         mDslv.setOnTouchListener(mController);
         mDslv.setDragEnabled(dragEnabled);
+        FloatingActionButton fab1 = (FloatingActionButton) rootview.findViewById(R.id.fab_1);
+        fab1.setOnCheckedChangeListener(this);
+        FloatingActionButton fab2 = (FloatingActionButton) rootview.findViewById(R.id.fab_2);
+        fab2.setOnCheckedChangeListener(this);
 
-        return mDslv;
+
+        return rootview;
     }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
-        mDslv = (DragSortListView) getListView();
 
         mDslv.setDropListener(mDropListener);
         mDslv.setRemoveListener(mRemoveListener);
@@ -127,7 +133,7 @@ package com.eclubprague.cardashboard.phone.fragments;
         ModuleId parentModuleId = (ModuleId) getActivity().getIntent().getSerializableExtra(DnDFragment.PARENT_MODULES_SCOPE_ID);
         if (parentModuleId == null) {
 
-                mParentModule = ModuleSupplier.getPersonalInstance().getHomeScreenModule(GlobalDataProvider.getInstance().getModuleContext());
+            mParentModule = ModuleSupplier.getPersonalInstance().getHomeScreenModule(GlobalDataProvider.getInstance().getModuleContext());
 
         } else {
             mParentModule = (IParentModule) ModuleSupplier.getPersonalInstance().findModule(GlobalDataProvider.getInstance().getModuleContext(), parentModuleId);
@@ -137,8 +143,8 @@ package com.eclubprague.cardashboard.phone.fragments;
 
         //mAdapter = new ArrayAdapter<>(getActivity(), R.layout.list_item_handle_left, R.id.text, mParentModule.getSubmodules());
         mAdapter = new IModuleArrayAdapter(getActivity(), R.id.text, mParentModule.getSubmodules());
-        setListAdapter(mAdapter);
-        ListView lv = getListView();
+        mDslv.setAdapter(mAdapter);
+        ListView lv = mDslv;
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> arg0, View arg1, int clickedItemNumber,
@@ -162,6 +168,20 @@ package com.eclubprague.cardashboard.phone.fragments;
 //                return true;
 //            }
 //        });
+    }
+
+    @Override
+    public void onCheckedChanged(FloatingActionButton fabView, boolean isChecked) {
+        switch (fabView.getId()) {
+            case R.id.fab_1:
+                Log.d(TAG, String.format("FAB 1 was %s.", isChecked ? "checked" : "unchecked"));
+                break;
+            case R.id.fab_2:
+                Log.d(TAG, String.format("FAB 2 was %s.", isChecked ? "checked" : "unchecked"));
+                break;
+            default:
+                break;
+        }
     }
 
 

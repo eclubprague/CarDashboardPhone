@@ -32,7 +32,7 @@ import com.eclubprague.cardashboard.phone.R;
  */
 public class FloatingActionButtonBasicFragment extends Fragment implements FloatingActionButton.OnCheckedChangeListener{
 
-    private final static String TAG = "FActionButtonBasicFragment";
+    private final static String TAG = "FABBasicFragment";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
