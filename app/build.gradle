@@ -26,6 +26,9 @@ android {
     sourceSets {
         instrumentTest.setRoot('src/androidTest/')
     }
+    lintOptions {
+      abortOnError false
+    } 
 }
 
 dependencies {
