@@ -41,22 +41,5 @@
     </com.eclubprague.cardashboard.phone.fab.FloatingActionButton>
 
 
-    <com.eclubprague.cardashboard.phone.fab.FloatingActionButton
-        android:id="@+id/fab_2"
-        android:layout_width="@dimen/fab_size_small"
-        android:layout_height="@dimen/fab_size_small"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="128dp"
-        android:background="@drawable/fab_background"
-        android:elevation="@dimen/fab_elevation"
-        android:stateListAnimator="@animator/fab_anim">
 
-        <ImageView
-            android:layout_width="@dimen/fab_icon_size"
-            android:layout_height="@dimen/fab_icon_size"
-            android:layout_gravity="center"
-            android:duplicateParentState="true"
-            android:src="@drawable/fab_icons" />
-
-    </com.eclubprague.cardashboard.phone.fab.FloatingActionButton>
 </FrameLayout>

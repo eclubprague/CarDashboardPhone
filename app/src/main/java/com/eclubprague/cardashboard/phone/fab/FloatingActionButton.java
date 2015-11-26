@@ -28,7 +28,7 @@ import android.widget.FrameLayout;
  * A Floating Action Button is a {@link android.widget.Checkable} view distinguished by a circled
  * icon floating above the UI, with special motion behaviors.
  */
-public class FloatingActionButton extends FrameLayout implements Checkable {
+public class FloatingActionButton extends FrameLayout {
 
     /**
      * Interface definition for a callback to be invoked when the checked state
@@ -120,23 +120,11 @@ public class FloatingActionButton extends FrameLayout implements Checkable {
     public void setOnCheckedChangeListener(OnCheckedChangeListener listener) {
         mOnCheckedChangeListener = listener;
     }
-
-    @Override
-    public boolean isChecked() {
-        return mChecked;
-    }
-
-    @Override
-    public void toggle() {
-        setChecked(!mChecked);
-    }
-
     /**
      * Override performClick() so that we can toggle the checked state when the view is clicked
      */
     @Override
     public boolean performClick() {
-        toggle();
         return super.performClick();
     }
 
@@ -152,9 +140,6 @@ public class FloatingActionButton extends FrameLayout implements Checkable {
     @Override
     protected int[] onCreateDrawableState(int extraSpace) {
         final int[] drawableState = super.onCreateDrawableState(extraSpace + 1);
-        if (isChecked()) {
-            mergeDrawableStates(drawableState, CHECKED_STATE_SET);
-        }
         return drawableState;
     }
 }

@@ -37,7 +37,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 
-public class DnDFragment extends Fragment implements FloatingActionButton.OnCheckedChangeListener {
+public class DnDFragment extends Fragment implements View.OnClickListener {
 
     public static String TAG = DnDFragment.class.getSimpleName();
     private ArrayAdapter<IModule> mAdapter;
@@ -115,9 +115,7 @@ public class DnDFragment extends Fragment implements FloatingActionButton.OnChec
         mDslv.setOnTouchListener(mController);
         mDslv.setDragEnabled(dragEnabled);
         FloatingActionButton fab1 = (FloatingActionButton) rootview.findViewById(R.id.fab_1);
-        fab1.setOnCheckedChangeListener(this);
-        FloatingActionButton fab2 = (FloatingActionButton) rootview.findViewById(R.id.fab_2);
-        fab2.setOnCheckedChangeListener(this);
+        fab1.setOnClickListener(this);
 
 
         return rootview;
@@ -170,18 +168,10 @@ public class DnDFragment extends Fragment implements FloatingActionButton.OnChec
 //        });
     }
 
+
     @Override
-    public void onCheckedChanged(FloatingActionButton fabView, boolean isChecked) {
-        switch (fabView.getId()) {
-            case R.id.fab_1:
-                Log.d(TAG, String.format("FAB 1 was %s.", isChecked ? "checked" : "unchecked"));
-                break;
-            case R.id.fab_2:
-                Log.d(TAG, String.format("FAB 2 was %s.", isChecked ? "checked" : "unchecked"));
-                break;
-            default:
-                break;
-        }
+    public void onClick(View v) {
+        Log.d("DnDFragment", "onCLick");
     }
 
 
