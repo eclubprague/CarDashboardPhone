@@ -22,7 +22,9 @@ import com.eclubprague.cardashboard.core.data.ModuleSupplier;
 import com.eclubprague.cardashboard.core.data.database.ModuleDAO;
 import com.eclubprague.cardashboard.core.modules.base.IModule;
 import com.eclubprague.cardashboard.core.modules.base.IParentModule;
+import com.eclubprague.cardashboard.core.modules.base.ModuleEvent;
 import com.eclubprague.cardashboard.core.modules.base.models.ModuleId;
+import com.eclubprague.cardashboard.core.modules.predefined.EmptyModule;
 import com.eclubprague.cardashboard.phone.R;
 import com.eclubprague.cardashboard.phone.activities.DnDActivity;
 import com.eclubprague.cardashboard.phone.activities.ScreenSlideActivity;
@@ -171,6 +173,7 @@ public class DnDFragment extends Fragment implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
+        GlobalDataProvider.getInstance().getModuleContext().onModuleEvent(new EmptyModule(), ModuleEvent.ADD);
         Log.d("DnDFragment", "onCLick");
     }
 
