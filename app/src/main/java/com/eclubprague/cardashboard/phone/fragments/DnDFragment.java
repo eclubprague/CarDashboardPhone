@@ -20,6 +20,7 @@ import android.widget.Toast;
 import com.eclubprague.cardashboard.core.application.GlobalDataProvider;
 import com.eclubprague.cardashboard.core.data.ModuleSupplier;
 import com.eclubprague.cardashboard.core.data.database.ModuleDAO;
+import com.eclubprague.cardashboard.core.fragments.ModuleListDialogFragment;
 import com.eclubprague.cardashboard.core.modules.base.IModule;
 import com.eclubprague.cardashboard.core.modules.base.IParentModule;
 import com.eclubprague.cardashboard.core.modules.base.ModuleEvent;
@@ -74,6 +75,7 @@ public class DnDFragment extends Fragment implements View.OnClickListener {
                 @Override
                 public void remove(int which) {
                     mAdapter.remove(mAdapter.getItem(which));
+                    ScreenSlideActivity.modulesOrderChanged = true;
                 }
             };
 
@@ -101,9 +103,6 @@ public class DnDFragment extends Fragment implements View.OnClickListener {
         View rootview = inflater.inflate(R.layout.dslv_fragment_main, container, false);
         mDslv = (DragSortListView) rootview.findViewById(R.id.DndList);
 
-        // defaults are
-        //   dragStartMode = onDown
-        //   removeMode = flingRight
         DragSortController controller = new DragSortController(mDslv);
         controller.setDragHandleId(R.id.drag_handle);
         controller.setClickRemoveId(R.id.click_remove);
@@ -123,6 +122,8 @@ public class DnDFragment extends Fragment implements View.OnClickListener {
         return rootview;
     }
 
+    ModuleId parentModuleId;
+
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -130,7 +131,7 @@ public class DnDFragment extends Fragment implements View.OnClickListener {
         mDslv.setDropListener(mDropListener);
         mDslv.setRemoveListener(mRemoveListener);
 
-        ModuleId parentModuleId = (ModuleId) getActivity().getIntent().getSerializableExtra(DnDFragment.PARENT_MODULES_SCOPE_ID);
+        parentModuleId = (ModuleId) getActivity().getIntent().getSerializableExtra(DnDFragment.PARENT_MODULES_SCOPE_ID);
         if (parentModuleId == null) {
 
             mParentModule = ModuleSupplier.getPersonalInstance().getHomeScreenModule(GlobalDataProvider.getInstance().getModuleContext());
@@ -173,7 +174,23 @@ public class DnDFragment extends Fragment implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
-        GlobalDataProvider.getInstance().getModuleContext().onModuleEvent(new EmptyModule(), ModuleEvent.ADD);
+        ModuleListDialogFragment dialog = ModuleListDialogFragment.newInstance(GlobalDataProvider.getInstance().getModuleContext(), new ModuleListDialogFragment.OnAddModuleListener() {
+            @Override
+            public void addModule(IModule module) {
+                Log.d("adding modules", module.toString());
+                mParentModule.addSubmodules(module);
+
+            }
+
+
+        });
+
+        //dialog.show(getFragmentManager(), "Applist");
+
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
+        ft.add(dialog, null);
+        ft.commitAllowingStateLoss();
+//        GlobalDataProvider.getInstance().getModuleContext().onModuleEvent(null,ModuleEvent.ADD);
         Log.d("DnDFragment", "onCLick");
     }
 

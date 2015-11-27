@@ -1,6 +1,7 @@
 package com.eclubprague.cardashboard.phone.activities;
 
 import android.app.Activity;
+import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -152,7 +153,12 @@ public class ScreenSlideActivity extends FragmentActivity implements IModuleCont
                         Log.d("adding modules", modules.toString());
                     }
                 });
-                dialog.show(getFragmentManager(), "Applist");
+
+                //dialog.show(getFragmentManager(), "Applist");
+
+                FragmentTransaction ft = getFragmentManager().beginTransaction();
+                ft.add(dialog, null);
+                ft.commitAllowingStateLoss();
 
                 break;
         }
