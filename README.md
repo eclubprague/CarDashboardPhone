@@ -19,4 +19,5 @@ With the optional Bluetooth ELM327 OBD Adapter the application supports the extr
 - Check engine light (MIL) with explanation of the occurred errors
 
 The whole CarDashboard family is still in the development phase with very intensive progress every week.
+...
 
