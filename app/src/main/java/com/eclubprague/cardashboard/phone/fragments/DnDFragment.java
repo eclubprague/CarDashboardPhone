@@ -44,7 +44,8 @@ public class DnDFragment extends Fragment implements View.OnClickListener {
 
     public static String TAG = DnDFragment.class.getSimpleName();
     private ArrayAdapter<IModule> mAdapter;
-    private IParentModule mParentModule;
+    private IParentModule mGlobalParentModule = ModuleSupplier.getPersonalInstance().getHomeScreenModule(GlobalDataProvider.getInstance().getModuleContext());
+    private IParentModule mCurrentParentModule;
 
     public static final String PARENT_MODULES_SCOPE_ID = "parentModulesScopeId";
 
@@ -55,13 +56,13 @@ public class DnDFragment extends Fragment implements View.OnClickListener {
                 public void drop(int from, int to) {
 
                     if (from != to) {
-                        Log.d(TAG, mParentModule.getSubmodules().toString());
+                        Log.d(TAG, mCurrentParentModule.getSubmodules().toString());
                         IModule item = mAdapter.getItem(from);
                         mAdapter.remove(item);
                         mAdapter.insert(item, to);
                         try {
-                            ModuleDAO.saveParentModuleAsync(GlobalDataProvider.getInstance().getActivity(), mParentModule);
-                            Log.d(TAG, mParentModule.getSubmodules().toString());
+                            ModuleDAO.saveParentModuleAsync(GlobalDataProvider.getInstance().getActivity(), mGlobalParentModule);
+                            Log.d(TAG, mCurrentParentModule.getSubmodules().toString());
                             ScreenSlideActivity.modulesOrderChanged = true;
                         } catch (IOException e) {
                             Log.e(TAG, e.getMessage());
@@ -74,8 +75,13 @@ public class DnDFragment extends Fragment implements View.OnClickListener {
             new DragSortListView.RemoveListener() {
                 @Override
                 public void remove(int which) {
-                    mAdapter.remove(mAdapter.getItem(which));
-                    ScreenSlideActivity.modulesOrderChanged = true;
+                    try {
+                        mAdapter.remove(mAdapter.getItem(which));
+                        ScreenSlideActivity.modulesOrderChanged = true;
+                        ModuleDAO.saveParentModuleAsync(GlobalDataProvider.getInstance().getActivity(), mGlobalParentModule);
+                    } catch (IOException e) {
+                        Log.e(TAG, e.getMessage());
+                    }
                 }
             };
 
@@ -133,17 +139,14 @@ public class DnDFragment extends Fragment implements View.OnClickListener {
 
         parentModuleId = (ModuleId) getActivity().getIntent().getSerializableExtra(DnDFragment.PARENT_MODULES_SCOPE_ID);
         if (parentModuleId == null) {
-
-            mParentModule = ModuleSupplier.getPersonalInstance().getHomeScreenModule(GlobalDataProvider.getInstance().getModuleContext());
-
+            mCurrentParentModule = mGlobalParentModule;
         } else {
-            mParentModule = (IParentModule) ModuleSupplier.getPersonalInstance().findModule(GlobalDataProvider.getInstance().getModuleContext(), parentModuleId);
+            mCurrentParentModule = (IParentModule) ModuleSupplier.getPersonalInstance().findModule(GlobalDataProvider.getInstance().getModuleContext(), parentModuleId);
         }
-        if (mParentModule == null) return;
+        if (mCurrentParentModule == null) return;
 
 
-        //mAdapter = new ArrayAdapter<>(getActivity(), R.layout.list_item_handle_left, R.id.text, mParentModule.getSubmodules());
-        mAdapter = new IModuleArrayAdapter(getActivity(), R.id.text, mParentModule.getSubmodules());
+        mAdapter = new IModuleArrayAdapter(getActivity(), R.id.text, mCurrentParentModule.getSubmodules());
         mDslv.setAdapter(mAdapter);
         ListView lv = mDslv;
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -152,8 +155,6 @@ public class DnDFragment extends Fragment implements View.OnClickListener {
                                     long arg3) {
                 IModule current = mAdapter.getItem(clickedItemNumber);
                 if (current instanceof IParentModule) {
-
-
                     Intent intent = new Intent(getActivity(), DnDActivity.class);
                     intent.putExtra(DnDFragment.PARENT_MODULES_SCOPE_ID, current.getId());
                     startActivity(intent);
@@ -177,12 +178,14 @@ public class DnDFragment extends Fragment implements View.OnClickListener {
         ModuleListDialogFragment dialog = ModuleListDialogFragment.newInstance(GlobalDataProvider.getInstance().getModuleContext(), new ModuleListDialogFragment.OnAddModuleListener() {
             @Override
             public void addModule(IModule module) {
-                Log.d("adding modules", module.toString());
-                mParentModule.addSubmodules(module);
-
+                try {
+                    mCurrentParentModule.addSubmodules(module);
+                    ModuleDAO.saveParentModuleAsync(GlobalDataProvider.getInstance().getActivity(), mGlobalParentModule);
+                    ScreenSlideActivity.modulesOrderChanged = true;
+                } catch (IOException e) {
+                    Log.e(TAG, e.toString());
+                }
             }
-
-
         });
 
         //dialog.show(getFragmentManager(), "Applist");

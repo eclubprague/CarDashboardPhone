@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -55,11 +56,6 @@ public class ScreenSlideActivity extends FragmentActivity implements IModuleCont
         setContentView(R.layout.activity_screen_slide);
         mPager = (VerticalViewPager) findViewById(R.id.pager);
         GlobalDataProvider.getInstance().setModuleContext(this);
-        if (OBDGatewayService.getInstance() == null) {
-            Intent t = new Intent(this, OBDGatewayService.class);
-            startService(t);
-        }
-
         IParentModule module;
         if (getIntent() == null || getIntent().getSerializableExtra(KEY_PARENT_MODULE) == null) {
             module = ModuleSupplier.getPersonalInstance().getHomeScreenModule(this);
@@ -70,7 +66,6 @@ public class ScreenSlideActivity extends FragmentActivity implements IModuleCont
             module = ModuleSupplier.getPersonalInstance().findSubmenuModule(this, parentModuleId);
         }
         setModule(module);
-
     }
 
     @Override
@@ -244,6 +239,9 @@ public class ScreenSlideActivity extends FragmentActivity implements IModuleCont
         for (IActivityStateChangeListener iActivityStateChangeListener : modules) {
             iActivityStateChangeListener.onStart(this);
         }
+
+//        StartBluetoothAsyncTask bluetoothAsyncTask = new StartBluetoothAsyncTask();
+//        bluetoothAsyncTask.execute(this);
     }
 
     @Override
@@ -275,4 +273,17 @@ public class ScreenSlideActivity extends FragmentActivity implements IModuleCont
             //return modules.size();
         }
     }
+
+    private class StartBluetoothAsyncTask extends AsyncTask<Context, Void, Void> {
+
+        @Override
+        protected Void doInBackground(Context... contexts) {
+            if (OBDGatewayService.getInstance() == null) {
+                Intent t = new Intent(contexts[0], OBDGatewayService.class);
+                startService(t);
+            }
+            return null;
+        }
+    }
+
 }
