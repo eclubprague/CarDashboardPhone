@@ -239,9 +239,6 @@ public class ScreenSlideActivity extends FragmentActivity implements IModuleCont
         for (IActivityStateChangeListener iActivityStateChangeListener : modules) {
             iActivityStateChangeListener.onStart(this);
         }
-
-//        StartBluetoothAsyncTask bluetoothAsyncTask = new StartBluetoothAsyncTask();
-//        bluetoothAsyncTask.execute(this);
     }
 
     @Override
@@ -274,16 +271,6 @@ public class ScreenSlideActivity extends FragmentActivity implements IModuleCont
         }
     }
 
-    private class StartBluetoothAsyncTask extends AsyncTask<Context, Void, Void> {
 
-        @Override
-        protected Void doInBackground(Context... contexts) {
-            if (OBDGatewayService.getInstance() == null) {
-                Intent t = new Intent(contexts[0], OBDGatewayService.class);
-                startService(t);
-            }
-            return null;
-        }
-    }
 
 }
