@@ -46,6 +46,7 @@ public class DnDFragment extends Fragment implements View.OnClickListener {
     private ArrayAdapter<IModule> mAdapter;
     private IParentModule mGlobalParentModule = ModuleSupplier.getPersonalInstance().getHomeScreenModule(GlobalDataProvider.getInstance().getModuleContext());
     private IParentModule mCurrentParentModule;
+    private static boolean changed = false;
 
     public static final String PARENT_MODULES_SCOPE_ID = "parentModulesScopeId";
 
@@ -182,19 +183,18 @@ public class DnDFragment extends Fragment implements View.OnClickListener {
                     mCurrentParentModule.addSubmodules(module);
                     ModuleDAO.saveParentModuleAsync(GlobalDataProvider.getInstance().getActivity(), mGlobalParentModule);
                     ScreenSlideActivity.modulesOrderChanged = true;
+                    mAdapter = new IModuleArrayAdapter(getActivity(), R.id.text, mCurrentParentModule.getSubmodules());
+                    mDslv.setAdapter(mAdapter);
                 } catch (IOException e) {
                     Log.e(TAG, e.toString());
                 }
             }
         });
 
-        //dialog.show(getFragmentManager(), "Applist");
-
         FragmentTransaction ft = getFragmentManager().beginTransaction();
         ft.add(dialog, null);
         ft.commitAllowingStateLoss();
-//        GlobalDataProvider.getInstance().getModuleContext().onModuleEvent(null,ModuleEvent.ADD);
-        Log.d("DnDFragment", "onCLick");
+
     }
 
 
