@@ -1,6 +1,7 @@
 package com.eclubprague.cardashboard.phone.fragments;
 
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.ViewSwitcher;
 
+import com.eclubprague.cardashboard.core.application.GlobalDataProvider;
 import com.eclubprague.cardashboard.core.data.ModuleSupplier;
 import com.eclubprague.cardashboard.core.modules.base.IModule;
 import com.eclubprague.cardashboard.core.modules.base.IModuleContext;
@@ -48,9 +50,12 @@ public class ScreenSlidePageFragment extends Fragment {
         super.onSaveInstanceState(outState);
     }
 
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        if (savedInstanceState != null && savedInstanceState.containsKey("moduleId"))
+            this.module = ModuleSupplier.getPersonalInstance().findModule((IModuleContext) getActivity(), (ModuleId) savedInstanceState.getSerializable("moduleId"));
         ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_screen_slide_page, container, false);
         LinearLayout cardWrapper = (LinearLayout) rootView.findViewById(R.id.card_wrapper);
         ViewWithHolder<ModuleView> viewWithHolder = this.module.createViewWithHolder((IModuleContext) getActivity(), R.layout.module_holder, cardWrapper);
