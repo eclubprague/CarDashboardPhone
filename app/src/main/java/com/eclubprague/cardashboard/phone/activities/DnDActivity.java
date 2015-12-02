@@ -3,15 +3,24 @@ package com.eclubprague.cardashboard.phone.activities;
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
+import android.view.ViewGroup;
 
+import com.eclubprague.cardashboard.core.application.GlobalDataProvider;
+import com.eclubprague.cardashboard.core.model.resources.StringResource;
+import com.eclubprague.cardashboard.core.modules.base.IModule;
+import com.eclubprague.cardashboard.core.modules.base.IModuleContext;
+import com.eclubprague.cardashboard.core.modules.base.IParentModule;
+import com.eclubprague.cardashboard.core.modules.base.ModuleEvent;
 import com.eclubprague.cardashboard.phone.R;
 import com.eclubprague.cardashboard.phone.fragments.DnDFragment;
 import com.mobeta.android.dslv.DragSortController;
 
 
-public class DnDActivity extends Activity {
+public class DnDActivity extends Activity implements IModuleContext{
 
     private static final String TAG_DSLV_FRAGMENT = "dslv_fragment";
     public static final String TAG = DnDActivity.class.getSimpleName();
@@ -21,6 +30,9 @@ public class DnDActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        GlobalDataProvider.getInstance().setModuleContext(this);
+
         setContentView(R.layout.test_bed_main);
         if (mFragment == null)
             mFragment = getNewDslvFragment();
@@ -52,4 +64,58 @@ public class DnDActivity extends Activity {
         return f;
     }
 
+    @Override
+    public void goToParentModule(IParentModule parentModule) {
+
+    }
+
+    @Override
+    public void goBackFromParentModule(IParentModule previousParentModule) {
+
+    }
+
+    @Override
+    public void toggleQuickMenu(IModule module, boolean activate) {
+
+    }
+
+    @Override
+    public void turnQuickMenusOff() {
+
+    }
+
+    @Override
+    public void launchIntent(Intent intent, StringResource errorMessage) {
+
+    }
+
+    @Override
+    public Context getContext() {
+        return this;
+    }
+
+    @Override
+    public void onModuleEvent(IModule module, ModuleEvent event) {
+
+    }
+
+    @Override
+    public Activity getActivity() {
+        return this;
+    }
+
+    @Override
+    public ViewGroup getSnackbarHolder() {
+        return null;
+    }
+
+    @Override
+    public void restartActivity() {
+
+    }
+
+    @Override
+    public void restartApplication() {
+
+    }
 }

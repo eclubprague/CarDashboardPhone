@@ -22,6 +22,7 @@ import com.eclubprague.cardashboard.core.data.ModuleSupplier;
 import com.eclubprague.cardashboard.core.data.database.ModuleDAO;
 import com.eclubprague.cardashboard.core.fragments.ModuleListDialogFragment;
 import com.eclubprague.cardashboard.core.modules.base.IModule;
+import com.eclubprague.cardashboard.core.modules.base.IModuleContext;
 import com.eclubprague.cardashboard.core.modules.base.IParentModule;
 import com.eclubprague.cardashboard.core.modules.base.ModuleEvent;
 import com.eclubprague.cardashboard.core.modules.base.models.ModuleId;
@@ -176,7 +177,7 @@ public class DnDFragment extends Fragment implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
-        ModuleListDialogFragment dialog = ModuleListDialogFragment.newInstance(GlobalDataProvider.getInstance().getModuleContext(), new ModuleListDialogFragment.OnAddModuleListener() {
+        ModuleListDialogFragment dialog = ModuleListDialogFragment.newInstance((IModuleContext) getActivity(), new ModuleListDialogFragment.OnAddModuleListener() {
             @Override
             public void addModule(IModule module) {
                 try {

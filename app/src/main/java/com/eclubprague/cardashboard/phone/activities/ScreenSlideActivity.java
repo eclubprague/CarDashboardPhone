@@ -230,6 +230,7 @@ public class ScreenSlideActivity extends FragmentActivity implements IModuleCont
         for (IActivityStateChangeListener iActivityStateChangeListener : modules) {
             iActivityStateChangeListener.onResume(this);
         }
+
     }
 
     @Override
