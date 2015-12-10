@@ -22,6 +22,7 @@ import com.eclubprague.cardashboard.core.data.ModuleSupplier;
 import com.eclubprague.cardashboard.core.data.database.ModuleDAO;
 import com.eclubprague.cardashboard.core.fragments.ModuleListDialogFragment;
 import com.eclubprague.cardashboard.core.modules.base.IModule;
+import com.eclubprague.cardashboard.core.modules.base.IModuleContext;
 import com.eclubprague.cardashboard.core.modules.base.IParentModule;
 import com.eclubprague.cardashboard.core.modules.base.ModuleEvent;
 import com.eclubprague.cardashboard.core.modules.base.models.ModuleId;
@@ -60,7 +61,7 @@ public class DnDFragment extends Fragment implements View.OnClickListener {
                         mAdapter.remove(item);
                         mAdapter.insert(item, to);
                         try {
-                            ModuleDAO.saveParentModuleAsync(GlobalDataProvider.getInstance().getActivity(), mParentModule);
+                            ModuleDAO.saveParentModuleAsync((IModuleContext)GlobalDataProvider.getInstance().getActivity(), mParentModule);
                             Log.d(TAG, mParentModule.getSubmodules().toString());
                             ScreenSlideActivity.modulesOrderChanged = true;
                         } catch (IOException e) {
