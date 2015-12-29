@@ -182,7 +182,7 @@ public class DnDFragment extends Fragment implements View.OnClickListener {
             public void addModule(IModule module) {
                 try {
                     mCurrentParentModule.addSubmodules(module);
-                    ModuleDAO.saveParentModuleAsync(GlobalDataProvider.getInstance().getActivity(), mGlobalParentModule);
+                    ModuleDAO.saveParentModuleAsync((IModuleContext)GlobalDataProvider.getInstance().getActivity(), mGlobalParentModule);
                     ScreenSlideActivity.modulesOrderChanged = true;
                     mAdapter = new IModuleArrayAdapter(getActivity(), R.id.text, mCurrentParentModule.getSubmodules());
                     mDslv.setAdapter(mAdapter);
