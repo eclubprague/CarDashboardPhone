@@ -30,6 +30,7 @@ import com.eclubprague.cardashboard.core.modules.base.IParentModule;
 import com.eclubprague.cardashboard.core.modules.base.ModuleEvent;
 import com.eclubprague.cardashboard.core.modules.base.models.ModuleId;
 import com.eclubprague.cardashboard.core.obd.OBDGatewayService;
+import com.eclubprague.cardashboard.core.preferences.SettingsActivity;
 import com.eclubprague.cardashboard.phone.R;
 import com.eclubprague.cardashboard.phone.fragments.ScreenSlidePageFragment;
 import com.eclubprague.cardashboard.phone.utils.VerticalViewPager;
@@ -202,7 +203,7 @@ public class ScreenSlideActivity extends FragmentActivity implements IModuleCont
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.action_settings) {
-            Intent intent = new Intent(this, PhoneSettingsActivity.class);
+            Intent intent = new Intent(this,SettingsActivity.class);
             startActivity(intent);
 
         }
