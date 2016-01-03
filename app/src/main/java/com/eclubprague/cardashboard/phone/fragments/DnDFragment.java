@@ -63,7 +63,7 @@ public class DnDFragment extends Fragment implements View.OnClickListener {
                         mAdapter.remove(item);
                         mAdapter.insert(item, to);
                         try {
-                            ModuleDAO.saveParentModuleAsync((IModuleContext)GlobalDataProvider.getInstance().getActivity(), mCurrentParentModule);
+                            ModuleDAO.saveParentModuleAsync((IModuleContext) GlobalDataProvider.getInstance().getActivity(), mCurrentParentModule);
                             Log.d(TAG, mCurrentParentModule.getSubmodules().toString());
                             ScreenSlideActivity.modulesOrderChanged = true;
                         } catch (IOException e) {
@@ -80,7 +80,7 @@ public class DnDFragment extends Fragment implements View.OnClickListener {
                     try {
                         mAdapter.remove(mAdapter.getItem(which));
                         ScreenSlideActivity.modulesOrderChanged = true;
-                        ModuleDAO.saveParentModuleAsync((IModuleContext)GlobalDataProvider.getInstance().getActivity(), mGlobalParentModule);
+                        ModuleDAO.saveParentModuleAsync((IModuleContext) GlobalDataProvider.getInstance().getActivity(), mGlobalParentModule);
                     } catch (IOException e) {
                         Log.e(TAG, e.getMessage());
                     }
@@ -163,6 +163,8 @@ public class DnDFragment extends Fragment implements View.OnClickListener {
                 }
             }
         });
+
+        getActivity().setTitle(mCurrentParentModule.getTitle().getString());
 //        lv.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
 //            @Override
 //            public boolean onItemLongClick(AdapterView<?> arg0, View arg1, int arg2,
@@ -182,7 +184,7 @@ public class DnDFragment extends Fragment implements View.OnClickListener {
             public void addModule(IModule module) {
                 try {
                     mCurrentParentModule.addSubmodules(module);
-                    ModuleDAO.saveParentModuleAsync((IModuleContext)GlobalDataProvider.getInstance().getActivity(), mGlobalParentModule);
+                    ModuleDAO.saveParentModuleAsync((IModuleContext) GlobalDataProvider.getInstance().getActivity(), mGlobalParentModule);
                     ScreenSlideActivity.modulesOrderChanged = true;
                     mAdapter = new IModuleArrayAdapter(getActivity(), R.id.text, mCurrentParentModule.getSubmodules());
                     mDslv.setAdapter(mAdapter);

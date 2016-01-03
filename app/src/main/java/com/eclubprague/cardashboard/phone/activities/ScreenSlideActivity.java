@@ -29,7 +29,6 @@ import com.eclubprague.cardashboard.core.modules.base.IModuleContext;
 import com.eclubprague.cardashboard.core.modules.base.IParentModule;
 import com.eclubprague.cardashboard.core.modules.base.ModuleEvent;
 import com.eclubprague.cardashboard.core.modules.base.models.ModuleId;
-import com.eclubprague.cardashboard.core.obd.OBDGatewayService;
 import com.eclubprague.cardashboard.core.preferences.SettingsActivity;
 import com.eclubprague.cardashboard.phone.R;
 import com.eclubprague.cardashboard.phone.fragments.ScreenSlidePageFragment;

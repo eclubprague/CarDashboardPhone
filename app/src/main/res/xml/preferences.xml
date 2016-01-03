@@ -7,14 +7,27 @@
             android:defaultValue="false"
             android:dialogTitle="@string/pref_bluetooth_title"
             android:key="enable_bluetooth_preference"
-            android:summaryOff="@string/pref_bluetooth_summaryOff"
-            android:summaryOn="@string/pref_bluetooth_summaryOn"
+            android:summaryOff="@string/pref_bluetooth_summary"
+            android:summaryOn="@string/pref_bluetooth_summary"
             android:title="@string/pref_bluetooth_title" />
         <ListPreference
             android:dialogTitle="@string/pref_bluetooth_list_devices_title"
             android:key="bluetooth_list_preference"
             android:summary="@string/pref_bluetooth_list_devices_summary"
             android:title="@string/pref_bluetooth_list_devices_title" />
+    </PreferenceCategory>
+    <PreferenceCategory android:title="@string/title_pref_logging">
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:dialogTitle="@string/pref_logging_title"
+            android:key="logging_enabled_preference"
+            android:summaryOff="@string/pref_logging_summary"
+            android:summaryOn="@string/pref_logging_summary"
+            android:title="@string/pref_logging_title" />
+        <EditTextPreference
+            android:defaultValue="http://cloud.lukashruby.cz:8080/loggingserver/fileUpload"
+            android:key="logging_preference_upload_logs"
+            android:title="@string/logging_preference_upload_logs" />
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/title_pref_obd">
         <!-- <ListPreference
@@ -27,8 +40,8 @@
             android:defaultValue="false"
             android:dialogTitle="@string/pref_imperial_units_title"
             android:key="imperial_units_preference"
-            android:summaryOff="@string/pref_imperial_units_summaryOff"
-            android:summaryOn="@string/pref_imperial_units_summaryOn"
+            android:summaryOff="@string/pref_imperial_units_summary"
+            android:summaryOn="@string/pref_imperial_units_summary"
             android:title="@string/pref_imperial_units_title" />
         <!-- <EditTextPreference
             android:defaultValue=".85"

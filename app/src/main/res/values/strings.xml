@@ -15,4 +15,5 @@
     <string name="title_activity_screen_slide">ScreenSlideActivity</string>
     <string name="title_activity_module">Car Dashboard</string>
     <string name="order_of_modules">Order of modules</string>
+    <string name="logging_preference_upload_logs">Upload logs to server</string>
 </resources>
